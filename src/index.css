@@ -1,0 +1,118 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+:root{
+  --dark-primary-color : rgb(37, 37, 37);
+  --dark-secondary-color : rgb(50, 50, 50);
+  --dark-text-color : rgb(255, 255, 255);
+  --dark-button-color : #4A90E2;
+}
+
+body{
+  background-color: var(--dark-primary-color);
+  color: var(--dark-text-color);
+}
+
+header{
+  display: flex;
+  align-items: center;
+  height: 90px;
+  padding: 0 30px;
+  font-size: calc(15px + 2vw);
+  background-color: var(--dark-secondary-color);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.urlShortener{
+  display: grid;
+  place-items: center;
+  height: calc(100vh - 90px);
+}
+
+.urlShortener-i-cont{
+  background-color: var(--dark-secondary-color);
+  padding: 30px;
+  border-radius: 20px;
+  display: grid;
+  gap:20px;
+}
+
+.urlShortener-i-cont h2{
+  font-weight: normal;
+  min-width: 40vw;
+}
+
+.urlShortener-i-cont form{
+  width: 100%;
+  display: flex;
+}
+
+.urlShortener-i-cont form input{
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  border: none;
+  background-color: var(--dark-primary-color);
+  color: var(--dark-text-color);
+}
+
+.urlShortener-i-cont form input:hover{
+  /* border-top: 1px solid var(--dark-button-color);
+  border-bottom: 1px solid var(--dark-button-color);
+  border-left: 1px solid var(--dark-button-color); */
+  outline: 1px solid var(--dark-button-color);
+  outline-offset: -1px;
+}
+
+.urlShortener-i-cont form input:focus{
+  /* border-top: 1px solid var(--dark-button-color);
+  border-bottom: 1px solid var(--dark-button-color);
+  border-left: 1px solid var(--dark-button-color); */
+  outline: 1px solid var(--dark-button-color);
+  outline-offset: -1px;
+
+}
+
+.urlShortener-i-cont form button{
+  padding: 10px 20px;
+  border-radius: 0 10px 10px 0;
+  border: none;
+  background-color: var(--dark-button-color);
+  color: var(--dark-text-color);
+  cursor: pointer;
+}
+
+.urlShortener-i-cont form button:hover{
+  background-color: #3a7bd5;
+}
+
+
+.urlShortenerResult{
+  display: grid;
+  gap:10px;
+}
+
+.urlShortenerResult-i-cont{
+  width: 100%;
+  display: flex;
+}
+
+.urlShortenerResult-i-cont p{
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  background-color: var(--dark-primary-color);
+  color: var(--dark-text-color);
+}
+
+.urlShortenerResult-i-cont button{
+  padding: 10px 20px;
+  border-radius: 0 10px 10px 0;
+  border: none;
+  background-color: var(--dark-button-color);
+  color: var(--dark-text-color);
+  cursor: pointer;
+}
