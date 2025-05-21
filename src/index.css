@@ -57,6 +57,43 @@ header{
   border: none;
   background-color: var(--dark-primary-color);
   color: var(--dark-text-color);
+  font-size: calc(7px + 0.6vw);
+}
+
+.customURL-cont{
+  display: grid;
+  gap:10px
+}
+
+.customURL-i-cont{
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+  font-size: calc(10px + 0.6vw);
+}
+
+.customURL-i-cont input{
+  background-color: transparent;
+  border-bottom: 1px solid var(--dark-text-color);
+  border-radius: 0;
+  padding: 2px 5px;
+  font-size: calc(10px + 0.6vw);
+
+}
+
+.customURL-i-cont input:focus{
+  outline: none;
+  border-bottom: 1px solid var(--dark-button-color);
+}
+
+input{
+  /* width: 100%; */
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  border: none;
+  background-color: var(--dark-primary-color);
+  color: var(--dark-text-color);
+  font-size: calc(7px + 0.6vw);
 }
 
 .urlShortener-i-cont form input:hover{
@@ -106,6 +143,8 @@ header{
   border-radius: 10px 0 0 10px;
   background-color: var(--dark-primary-color);
   color: var(--dark-text-color);
+  font-size: calc(7px + 0.6vw);
+
 }
 
 .urlShortenerResult-i-cont button{
@@ -116,3 +155,24 @@ header{
   color: var(--dark-text-color);
   cursor: pointer;
 }
+
+.extra-features-i-cont{
+  display: flex;
+  gap:10px;
+  /* grid-template-columns: repeat(2, 1fr);	
+  place-items: center; */
+}
+
+.extra-feature-block{
+  /* background-color: var(--dark-button-color); */
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: grid;
+  gap:20px;
+  cursor: pointer;
+  border: 1px solid var(--dark-button-color);
+}
+
+/* .extra-feature-block:hover{
+  background-color: #3a7bd5;
+} */
