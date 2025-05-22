@@ -1,2 +1,2 @@
-# CompRL;
+# CompRL / BinRL;
  A web application for URL shortning, One place Link share and many more...
