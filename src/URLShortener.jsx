@@ -85,7 +85,7 @@ function URLShortener(){
                     <div className="customURL-cont">
                         Enter a custom URL Alias:
                         <div className="customURL-i-cont">
-                            binrl.com/<input type="text" placeholder="Enter Custom URL" />
+                            comprl.web.app/<input type="text" placeholder="Enter Custom URL" />
                         </div> 
                     </div>: <></>
                 }
