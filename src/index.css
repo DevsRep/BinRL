@@ -58,7 +58,7 @@ header{
   border: none;
   background-color: var(--dark-primary-color);
   color: var(--dark-text-color);
-  font-size: calc(7px + 0.6vw);
+  font-size: calc(10px + 0.6vw);
 }
 
 .customURL-cont{
@@ -114,7 +114,7 @@ input{
 
 }
 
-.urlShortener-i-cont form button{
+.urlShortenerForm button{
   padding: 10px 20px;
   border-radius: 0 10px 10px 0;
   border: none;
@@ -123,7 +123,7 @@ input{
   cursor: pointer;
 }
 
-.urlShortener-i-cont form button:hover{
+.urlShortenerForm button:hover{
   background-color: #3a7bd5;
 }
 
@@ -144,7 +144,7 @@ input{
   border-radius: 10px 0 0 10px;
   background-color: var(--dark-primary-color);
   color: var(--dark-text-color);
-  font-size: calc(7px + 0.6vw);
+  font-size: calc(10px + 0.6vw);
 
 }
 
@@ -178,3 +178,33 @@ input{
 /* .extra-feature-block:hover{
   background-color: #3a7bd5;
 } */
+
+
+
+@media screen and (max-width: 600px) {
+
+  .urlShortener-i-cont h2{
+    font-size: calc(13px + 2vw);
+  }
+
+  .extra-features-i-cont{
+    font-size: calc(10px + 0.6vw);
+  }
+
+  .customURL-i-cont input{
+    max-width: 90px;
+    overflow-x: scroll;
+  }
+
+  .urlShortener-i-cont{
+    padding: 20px 15px;
+    border-radius: 10px;
+  }
+
+  .urlShortenerForm button{
+    padding: 10px 13px;
+  }
+
+
+}
+ 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { getShortenedUrl, getShortenedUrlP, getShortenedUrlCP } from "./firebaseQueries";
 
 function URLShortener(){
 
@@ -7,7 +7,7 @@ function URLShortener(){
     const [shortenedUrl, setShortenedUrl] = useState("");
     const [customUrl, setCustomUrl] = useState(false);
     const [passwordurl, setPasswordurl] = useState(false);
-     
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,13 +51,36 @@ function URLShortener(){
             });
     }
 
+    const handleURLshorten = async (e) => {
+        const givenURL = document.querySelector(".URLinput").value;
+        setUrl(givenURL);
+        if(customUrl && passwordurl){
+            const customURL = document.querySelector(".customURL-i-cont input").value;
+            const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+            await getShortenedUrlCP(givenURL, password, customURL);
+            setShortenedUrl("comprl.web.app/" + customURL);
+
+        }else if(customUrl){
+            const customURL = document.querySelector(".customURL-i-cont input").value;
+            await getShortenedUrlCP(givenURL, "", customURL);
+            setShortenedUrl("comprl.web.app/" + customURL);
+        }else if(passwordurl){
+            const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+            const ext = await getShortenedUrlP(givenURL, password);
+            setShortenedUrl("comprl.web.app/" + ext);
+        }else{
+            const ext = await getShortenedUrl(givenURL);
+            setShortenedUrl("comprl.web.app/" + ext);
+        }
+    }
+
     return (
         <div className="urlShortener">
             <div className="urlShortener-i-cont">
                 <h2>Shorten Your looonnnggg... URL</h2>
                 <form className="urlShortenerForm" onSubmit={handleSubmit}>
-                    <input type="text" placeholder="Enter URL to shorten" />
-                    <button type="submit">Shorten</button>
+                    <input className="URLinput" type="text" placeholder="Enter URL to shorten"/>
+                    <button type="submit" onClick={handleURLshorten}>Shorten</button>
                 </form>
 
                 
