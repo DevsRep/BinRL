@@ -93,8 +93,18 @@ export async function getShortenedUrlCP(longUrl, password, customUrl) {
 
     try{
         const hasedURLPassword = await bcrypt.hash(password, 10)
+
+
+        let encryptedURL
+        await encryptData(longUrl, password).then((data) => {
+            // console.log("Encrypted data:", data);
+            encryptedURL = data;
+        }).catch((error) => { 
+            console.error("Error encrypting data:", error);
+        })
+
         const docRef = await setDoc(doc(db, "URLcenter", customUrl), {
-            url : longUrl,
+            url : encryptedURL,
             password: hasedURLPassword,
         });
         console.log("Document written with ID: ", docRef);

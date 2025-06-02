@@ -53,25 +53,49 @@ function URLShortener(){
 
     const handleURLshorten = async (e) => {
         const givenURL = document.querySelector(".URLinput").value;
+        let shortenedURL, pswd
         setUrl(givenURL);
-        if(customUrl && passwordurl){
-            const customURL = document.querySelector(".customURL-i-cont input").value;
-            const password = document.querySelector(".customURL-i-cont input[type='password']").value;
-            await getShortenedUrlCP(givenURL, password, customURL);
-            setShortenedUrl("comprl.web.app/" + customURL);
+        try{
+            if(customUrl && passwordurl){
+                const customURL = document.querySelector(".customURL-i-cont input").value;
+                const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+                await getShortenedUrlCP(givenURL, password, customURL);
+                setShortenedUrl("comprl.web.app/" + customURL);
+                shortenedURL = `comprl.web.app/${customURL}`
+                pswd = password
+            }else if(customUrl){
+                const customURL = document.querySelector(".customURL-i-cont input").value;
+                await getShortenedUrlCP(givenURL, "", customURL);
+                setShortenedUrl("comprl.web.app/" + customURL);
+                shortenedURL = `comprl.web.app/${customURL}`
+            }else if(passwordurl){
+                const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+                const ext = await getShortenedUrlP(givenURL, password);
+                setShortenedUrl("comprl.web.app/" + ext);
+                shortenedURL = `comprl.web.app/${ext}`
+            }else{
+                const ext = await getShortenedUrl(givenURL);
+                setShortenedUrl("comprl.web.app/" + ext);
+                shortenedURL = `comprl.web.app/${ext}`
+            }
 
-        }else if(customUrl){
-            const customURL = document.querySelector(".customURL-i-cont input").value;
-            await getShortenedUrlCP(givenURL, "", customURL);
-            setShortenedUrl("comprl.web.app/" + customURL);
-        }else if(passwordurl){
-            const password = document.querySelector(".customURL-i-cont input[type='password']").value;
-            const ext = await getShortenedUrlP(givenURL, password);
-            setShortenedUrl("comprl.web.app/" + ext);
-        }else{
-            const ext = await getShortenedUrl(givenURL);
-            setShortenedUrl("comprl.web.app/" + ext);
+            const currentState = JSON.parse(localStorage.getItem("linkhistory"))
+            currentState.push(
+                {
+                    actual : givenURL,
+                    short : shortenedURL,
+                    password : null
+                }
+            )
+
+            localStorage.setItem("linkhistory", JSON.stringify(currentState))
+
+            
+
+        }catch(e){
+            console.log('Sorrry there was an error. Oopss...')
         }
+
     }
 
     return (

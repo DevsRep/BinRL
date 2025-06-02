@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import { redirectURL, isPasswordProtected, checkPSWD, decryptURL } from "./firebaseQueries"
 
 function Page(){
@@ -13,7 +13,7 @@ function Page(){
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -26,14 +26,16 @@ function Page(){
         
         const check = await checkPSWD(password, data.password)
 
-        // console.log(check)
+        console.log(`checking => ${check}`)
 
         if(check){
-            console.log("Password is correct");
+            console.log(data.url);
             let redirectURL
             await decryptURL(data.url, password)
                 .then((decryptedURL) => {
+                    console.log("decrypting")
                     redirectURL = decryptedURL;
+                    console.log(redirectURL)
                 })
                 .catch((error) => {
                     console.error("Error decrypting URL:", error);
@@ -41,7 +43,10 @@ function Page(){
                     return;
                 });
             console.log(redirectURL);
+            // setTimeout(()=>{
+
             window.location.href = `${redirectURL}`;
+            // },10000)
         }else{
             setError("Incorrect password. Please try again.");
         }
@@ -52,13 +57,21 @@ function Page(){
         // window.location.href = `//google.com`;
         redirectURL(id)
             .then((data) => {
-                if (data.password !== "") {
-                    // console.log("This URL is password protected");
-                    setIsProtected(true);
-                    setData(data)
-                    setLoading(false);
+                if(data){
+                    if (data.password !== "") {
+                        // console.log("This URL is password protected");
+                        setIsProtected(true);
+                        setData(data)
+                        setLoading(false);
+                    }else{
+                        
+                        if(!data){
+                            setLoading(false)
+                        }
+                        window.location.href = data.url;
+                    }
                 }else{
-                    window.location.href = data.url;
+                    setLoading(false)
                 }
             })
             .catch((error) => {
@@ -86,8 +99,10 @@ function Page(){
                 </div>
             </div>
        ) : (
-        <div className="error">
-            <h1>Error</h1>
+        <div className="urlShortener">
+            <div className="urlShortener-i-cont">
+            <h1>Oops..Error</h1>
+            </div>
         </div>
        )
     )
