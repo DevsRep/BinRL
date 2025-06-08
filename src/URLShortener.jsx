@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { getShortenedUrl, getShortenedUrlP, getShortenedUrlCP } from "./firebaseQueries";
 
 function URLShortener(){
 
@@ -7,7 +7,7 @@ function URLShortener(){
     const [shortenedUrl, setShortenedUrl] = useState("");
     const [customUrl, setCustomUrl] = useState(false);
     const [passwordurl, setPasswordurl] = useState(false);
-     
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,13 +51,60 @@ function URLShortener(){
             });
     }
 
+    const handleURLshorten = async (e) => {
+        const givenURL = document.querySelector(".URLinput").value;
+        let shortenedURL, pswd
+        setUrl(givenURL);
+        try{
+            if(customUrl && passwordurl){
+                const customURL = document.querySelector(".customURL-i-cont input").value;
+                const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+                await getShortenedUrlCP(givenURL, password, customURL);
+                setShortenedUrl("comprl.web.app/" + customURL);
+                shortenedURL = `comprl.web.app/${customURL}`
+                pswd = password
+            }else if(customUrl){
+                const customURL = document.querySelector(".customURL-i-cont input").value;
+                await getShortenedUrlCP(givenURL, "", customURL);
+                setShortenedUrl("comprl.web.app/" + customURL);
+                shortenedURL = `comprl.web.app/${customURL}`
+            }else if(passwordurl){
+                const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+                const ext = await getShortenedUrlP(givenURL, password);
+                setShortenedUrl("comprl.web.app/" + ext);
+                shortenedURL = `comprl.web.app/${ext}`
+            }else{
+                const ext = await getShortenedUrl(givenURL);
+                setShortenedUrl("comprl.web.app/" + ext);
+                shortenedURL = `comprl.web.app/${ext}`
+            }
+
+            const currentState = JSON.parse(localStorage.getItem("linkhistory"))
+            currentState.push(
+                {
+                    actual : givenURL,
+                    short : shortenedURL,
+                    password : null
+                }
+            )
+
+            localStorage.setItem("linkhistory", JSON.stringify(currentState))
+
+            
+
+        }catch(e){
+            console.log('Sorrry there was an error. Oopss...')
+        }
+
+    }
+
     return (
         <div className="urlShortener">
             <div className="urlShortener-i-cont">
                 <h2>Shorten Your looonnnggg... URL</h2>
                 <form className="urlShortenerForm" onSubmit={handleSubmit}>
-                    <input type="text" placeholder="Enter URL to shorten" />
-                    <button type="submit">Shorten</button>
+                    <input className="URLinput" type="text" placeholder="Enter URL to shorten"/>
+                    <button type="submit" onClick={handleURLshorten}>Shorten</button>
                 </form>
 
                 

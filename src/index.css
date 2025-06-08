@@ -9,6 +9,7 @@
   --dark-secondary-color : rgb(50, 50, 50);
   --dark-text-color : rgb(255, 255, 255);
   --dark-button-color : #4A90E2;
+  --clear-btn-bg : #c55555;
 }
 
 body{
@@ -21,10 +22,152 @@ header{
   align-items: center;
   height: 90px;
   padding: 0 30px;
-  font-size: calc(15px + 2vw);
   background-color: var(--dark-secondary-color);
   font-family: 'Courier New', Courier, monospace;
 }
+
+header h1{
+  font-size: calc(15px + 2vw);
+  font-weight: normal;
+}
+
+.navLinks{
+  display: flex;
+  margin-left: auto;
+  gap: 15px;
+  /* text-decoration: underline; */
+}
+
+.navLinks div:hover{
+  text-decoration: overline;
+  cursor: pointer;
+}
+
+.prev-links-list-cont::-webkit-scrollbar{
+  display: none;
+}
+
+.prev-links-list-cont{
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top:0;
+  width: 500px;
+  bottom: 0;
+  right: 0;
+  background-color: var(--dark-secondary-color);
+  transition: all 250ms;
+}
+
+
+.link-pswd{
+  display: flex;
+  padding: 0;
+}
+
+
+.shortened-link-cont{
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+
+.shortened-link{
+  overflow: scroll;
+
+}
+
+
+.link-pswd input{
+  width: 100%;
+  border-radius: 5px 0 0 5px;
+  background-color: var(--dark-secondary-color);
+  font-size:medium;
+}
+
+.copyBtn-list{
+  /* padding: 10px 20px; */
+  /* height: 100%; */
+  border-radius: 0 5px 5px 0;
+  border: none;
+  background-color: var(--dark-button-color);
+  color: var(--dark-text-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+
+.prev-list-header{
+  position: sticky;
+  display: flex;
+  align-items: center;
+  top:0px;
+  z-index: 100;
+  padding: 0 10px;
+  background-color: var(--dark-secondary-color);
+}
+
+
+.close-btn{
+  /* position: absolute; */
+  margin-left: auto;
+  font-size: calc(10px + 2vw);
+  cursor: pointer;
+  padding: 5px 10px;
+  
+}
+
+.close-btn:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.prev-link{
+  background-color: var(--dark-primary-color);
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  display: grid;
+  gap:5px;
+}
+
+.prev-link .i-blk{
+  background-color: var(--dark-secondary-color);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  
+  width: 100%;
+}
+.prev-link .i-blk >*{
+  padding: 5px 7px;
+  /* width: 100px; */
+}
+
+
+.prev-link .i-blk .actual-link-cont{
+  overflow: scroll;
+  
+  width: 100%;
+}
+
+.actual-link{
+  word-break: break-all;
+  word-wrap: break-word;
+
+}
+
+
+.clear-history-btn-cont{
+  display: grid;
+  place-items: center;
+}
+
+.clear-history-btn{
+  padding: 10px 15px; 
+  background-color: var(--clear-btn-bg);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 
 .urlShortener{
   display: grid;
@@ -58,7 +201,7 @@ header{
   border: none;
   background-color: var(--dark-primary-color);
   color: var(--dark-text-color);
-  font-size: calc(7px + 0.6vw);
+  font-size: calc(10px + 0.6vw);
 }
 
 .customURL-cont{
@@ -114,7 +257,7 @@ input{
 
 }
 
-.urlShortener-i-cont form button{
+.urlShortenerForm button{
   padding: 10px 20px;
   border-radius: 0 10px 10px 0;
   border: none;
@@ -123,7 +266,7 @@ input{
   cursor: pointer;
 }
 
-.urlShortener-i-cont form button:hover{
+.urlShortenerForm button:hover{
   background-color: #3a7bd5;
 }
 
@@ -144,7 +287,7 @@ input{
   border-radius: 10px 0 0 10px;
   background-color: var(--dark-primary-color);
   color: var(--dark-text-color);
-  font-size: calc(7px + 0.6vw);
+  font-size: calc(10px + 0.6vw);
 
 }
 
@@ -178,3 +321,40 @@ input{
 /* .extra-feature-block:hover{
   background-color: #3a7bd5;
 } */
+
+
+
+@media screen and (max-width: 600px) {
+
+  .urlShortener-i-cont h2{
+    font-size: calc(13px + 2vw);
+  }
+
+  .extra-features-i-cont{
+    font-size: calc(10px + 0.6vw);
+  }
+
+  .customURL-i-cont input{
+    max-width: 90px;
+    overflow-x: scroll;
+  }
+
+  .urlShortener-i-cont{
+    padding: 20px 15px;
+    border-radius: 10px;
+  }
+
+  .urlShortenerForm button{
+    padding: 10px 13px;
+  }
+
+  .prev-links-list-cont{
+    width: 100vw;
+  }
+
+  .close-btn{
+    font-size: calc(20px + 2vw);
+  }
+
+}
+ 
