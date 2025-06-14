@@ -10,25 +10,25 @@ function Header(){
     useEffect(()=>{
         // localStorage.clear()
         if(localStorage.length > 0){
-            console.log(localStorage)
+            // console.log(localStorage)
             let temp = localStorage.getItem("linkhistory")
             temp = JSON.parse(temp)
             setHistory(temp)
 
         }else{
-            let temp = [
-                {
-                    actual : "google.com",
-                    short : "comprl.com/wsdd",
-                    password : null
-                }, {
-                    actual : "google.com",
-                    short : "comprl.com/wsdd",
-                    password : null
-                }
-            ]
+            // let temp = [
+            //     {
+            //         actual : "google.com",
+            //         short : "comprl.com/wsdd",
+            //         password : null
+            //     }, {
+            //         actual : "google.com",
+            //         short : "comprl.com/wsdd",
+            //         password : null
+            //     }
+            // ]
             
-            localStorage.setItem("linkhistory", JSON.stringify(temp))
+            localStorage.setItem("linkhistory", JSON.stringify([]))
             // localStorage.setItem("shortnedLinks", JSON.stringify(temp))
             // localStorage.setItem("passwords", JSON.stringify(temp))
         }
@@ -69,12 +69,13 @@ function Header(){
                 </div>
                 {
                 linkshistory ? (
-                    linkshistory.map((element, index) => (
+                    linkshistory.reverse().map((element, index) => (
                     <PrevLinksTemp
                         key={index}
                         actual={element.actual}
                         shortened={element.short}
-                        password={element.password}
+                        password={null}
+                        copyFunc = {async ()=>navigator.clipboard.writeText(element.short)}
                     />
                     ))
                 ) : (
@@ -83,7 +84,7 @@ function Header(){
                 }
 
                 
-                <div className="prev-link">
+                {/* <div className="prev-link">
                     Actual Link:
                     <div className="i-blk actual-link-cont">
                         <div className="actual-link">
@@ -103,7 +104,7 @@ function Header(){
                         <input className="prev-list-link-pswd" value={"comprl.web.app/short"} readOnly/>
                         <div className="show-hide-btn copyBtn-list">Show</div>
                     </div>
-                </div>
+                </div> */}
 
                                 {
                 linkshistory ? (

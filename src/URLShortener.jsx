@@ -11,16 +11,16 @@ function URLShortener(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("URL Shortened");
+        // console.log("URL Shortened");
     }
 
     const handlecustURL = (e) => {
         if(customUrl){
             setCustomUrl(false);
-            console.log("Custom URL Disabled");
+            // console.log("Custom URL Disabled");
             document.querySelector(".URLblk").style.backgroundColor = "transparent";
         }else{
-            console.log("Custom URL Enabled");
+            // console.log("Custom URL Enabled");
             document.querySelector(".URLblk").style.backgroundColor = "#3a7bd5";
             setCustomUrl(true);
         }
@@ -29,10 +29,10 @@ function URLShortener(){
     const handlepswdURL = (e) => {
         if(passwordurl){
             setPasswordurl(false);
-            console.log("Password URL Disabled");
+            // console.log("Password URL Disabled");
             document.querySelector(".pswdBLK").style.backgroundColor = "transparent";
         }else{
-            console.log("Password URL Enabled");
+            // console.log("Password URL Enabled");
             document.querySelector(".pswdBLK").style.backgroundColor = "#3a7bd5";
             setPasswordurl(true);
         }
@@ -53,7 +53,62 @@ function URLShortener(){
 
     const handleURLshorten = async (e) => {
         const givenURL = document.querySelector(".URLinput").value;
+        const pswdCont = document.querySelector(".customURL-i-cont input[type='password']")
+        const custCont = document.querySelector(".customURL-i-cont input")
+
         let shortenedURL, pswd
+        if(givenURL === ""){
+            alert("Where is the Looooonnnngggg URL?")
+            document.querySelector(".URLinput").style.outline="1px solid red"
+            document.querySelector(".URLinput").style.outlineOffset="-1px"
+            setTimeout(()=>{
+                document.querySelector(".URLinput").style.outline="none"
+            },3000)
+            return 
+        }else{
+            if(!(URL.canParse(givenURL))){
+                alert("Not a valid URL :|")
+                return
+            }
+        }
+
+        if(passwordurl && pswdCont.value === ""){
+            pswdCont.style.borderBottom = "1px solid red"
+            alert("Password field cant be empty..")
+            setTimeout(()=>{
+                pswdCont.style.borderBottom = "1px solid #ffffff"
+            },3000)
+            return
+        }
+
+        if(customUrl){
+            let custVal = custCont.value
+            if(custVal === ""){
+                custCont.style.borderBottom = "1px solid red"
+                alert("Enter the custom alias")
+                setTimeout(()=>{
+                    custCont.style.borderBottom = "1px solid #ffffff"
+                },3000)
+                return
+
+            }
+
+            if(custVal.length < 5){
+                alert("Custom Alias must be minimum 5 characters")
+                return 
+            }
+
+            const illegalChar = ["/", ".", "@", "#", "*", "&", "?", "(", ")", "=", ":", ";", "<",">", "{", "}", "[", "]"]
+
+            for(let i of illegalChar){
+                if(custVal.includes(i)){
+                    alert(`The alias cannot contain the character ${i}`)
+                     return
+                }
+            }
+           
+        }
+
         setUrl(givenURL);
         try{
             if(customUrl && passwordurl){

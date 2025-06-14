@@ -1,6 +1,8 @@
+import { useState } from "react"
+
 function PrevLinksTemp(props){
 
-
+    const [copyStat, setCopyStat] = useState(false)
     
     const togglePSWDvisib = () =>{
         const inputCont = document.querySelector(".prev-list-link-pswd")
@@ -15,20 +17,20 @@ function PrevLinksTemp(props){
         }
     }
 
+    const copyToClipboard = async () => {
+    try {
+        await props.copyFunc();
+        setCopyStat(true);
+        // console.log("Copied!");
 
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText("some")
-            .then(() => {
-                document.querySelector(".copyBtn-list").innerText = "Copied!";
-                setTimeout(() => {
-                    document.querySelector(".copyBtn-list").innerText = "Copy";
-                }, 4000);
-            })
-            .catch((err) => {
-                console.error("Failed to copy: ", err);
-            });
+        setTimeout(() => {
+            setCopyStat(false);
+            // console.log("Copy state reset!");
+        }, 5000);
+    } catch (err) {
+        console.error("Failed to copy: ", err);
     }
-    
+    };
 
     return(
 
@@ -46,7 +48,7 @@ function PrevLinksTemp(props){
                     <div className="shortened-link">
                         {props.shortened}
                     </div>
-                    <div className="copyBtn-list" onClick={copyToClipboard}>Copy</div>
+                    <div className="copyBtn-list" onClick={copyToClipboard}>{copyStat ? "Copy" : "Copied"}</div>
                 </div>
 
                 Password:
@@ -68,7 +70,9 @@ function PrevLinksTemp(props){
                     <div className="shortened-link">
                         {props.shortened}
                     </div>
-                    <div className="copyBtn-list" onClick={copyToClipboard}>Copy</div>
+                    {/* <div className="copyBtn-list" onClick={copyToClipboard}>Copy</div> */}
+                    <div className="copyBtn-list" onClick={copyToClipboard}>{copyStat ? "Copied" : "Copy" }</div>
+
                 </div>
 
             </div>

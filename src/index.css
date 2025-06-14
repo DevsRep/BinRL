@@ -52,7 +52,7 @@ header h1{
   overflow-x: hidden;
   overflow-y: scroll;
   top:0;
-  width: 500px;
+  width: 0px;
   bottom: 0;
   right: 0;
   background-color: var(--dark-secondary-color);
@@ -71,9 +71,14 @@ header h1{
   grid-template-columns: 80% 20%;
 }
 
+.shortened-link::-webkit-scrollbar{
+  display: none;
+}
+
 .shortened-link{
   overflow: scroll;
-
+  /* box-shadow: -10px 0px 10px #00000055 inset; */
+  /* box-shadow: 10px inset #000; */
 }
 
 
@@ -94,6 +99,7 @@ header h1{
   cursor: pointer;
   display: flex;
   justify-content: center;
+  box-shadow: -10px 0px 10px 1px #2c2c2cb6;
 }
 
 
@@ -349,7 +355,7 @@ input{
   }
 
   .prev-links-list-cont{
-    width: 100vw;
+    width: 0vw;
   }
 
   .close-btn{
