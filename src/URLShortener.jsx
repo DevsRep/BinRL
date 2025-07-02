@@ -98,6 +98,11 @@ function URLShortener(){
                 return 
             }
 
+            if(custVal == "links"){
+                alert("The alias `links` is reserved")
+                return
+            }
+
             const illegalChar = ["/", ".", "@", "#", "*", "&", "?", "(", ")", "=", ":", ";", "<",">", "{", "}", "[", "]"]
 
             for(let i of illegalChar){

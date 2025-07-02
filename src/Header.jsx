@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react"
 import PrevLinksTemp from "./PrevLinksTemp"
+import { Link } from "react-router-dom"
 
 
-function Header(){
+function Header(props){
 
     const [linkshistory, setHistory] = useState([])
     const [sideHistoryBar, setSideHitoryBar] = useState(false)
 
+    const [subText, setSubText] = useState("")
+
+    useEffect(()=>{
+        if(props.subText != ""){
+            setSubText(props.subText)
+            console.log(subText)
+        }
+    }, [])
+
     useEffect(()=>{
         // localStorage.clear()
+    
         if(localStorage.length > 0){
             // console.log(localStorage)
             let temp = localStorage.getItem("linkhistory")
@@ -59,7 +70,7 @@ function Header(){
 
             <div className="navLinks">
                 <div onClick={handlePrevLinksBtn}>Your Links</div>
-                <div>LinkDir</div>
+                <Link to={"/links"}><div>LinkDir</div></Link>
             </div>
 
             <div className="prev-links-list-cont">

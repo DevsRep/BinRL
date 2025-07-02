@@ -38,9 +38,20 @@ header h1{
   /* text-decoration: underline; */
 }
 
-.navLinks div:hover{
-  text-decoration: overline;
+.navLinks a{
+  text-decoration: none;
+  color: var(--dark-text-color);
+}
+
+.navLinks div{
   cursor: pointer;
+  transition: all 200ms;
+}
+
+.navLinks div:hover{
+  /* text-decoration: overline;
+  cursor: pointer; */
+  box-shadow: 0 20px 0 orange inset;
 }
 
 .prev-links-list-cont::-webkit-scrollbar{
@@ -328,6 +339,141 @@ input{
   background-color: #3a7bd5;
 } */
 
+
+.link-dir-list{
+  display: grid;
+  justify-content: center;
+  padding: 20px;
+}
+
+.link-dir-list > *{
+  text-decoration: none;
+}
+
+.new-link-dir-cre-cont{
+  display: flex;
+  gap: 20px;
+  width: calc(30vw + 150px);
+  background-color: var(--dark-secondary-color);
+  padding: 20px 15px;
+  border-radius: 10px;
+  align-items: center;
+  transition: all 250ms;
+  cursor: pointer;
+}
+
+.new-link-dir-cre-cont:hover{
+  box-shadow: 0 0 10px 1px var(--dark-secondary-color);
+}
+
+
+.new-link-dir-cre-cont > *{
+  
+  color: var(--dark-text-color);
+}
+
+.new-link-dir-cre-cont p{
+  margin-left: auto;
+  border: 1px solid #ffff;
+  padding: 3px 7px;
+  border-radius: 1000px;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+}
+
+
+.new-link-dir-form-cont{
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  transition: all 250ms;
+}
+
+.new-link-dir-form{
+  display: grid;
+  gap: 20px;
+  width: calc(30vw + 150px);
+  background-color: var(--dark-secondary-color);
+  padding: 20px 15px;
+  border-radius: 10px;
+  transition: all 250ms;
+
+}
+
+
+.new-link-dir-form input{
+  background-color: var(--dark-secondary-color);
+  border-bottom: 1px solid var(--dark-text-color);
+  border-radius: 0;
+  padding: 5px 0;
+  margin: 0 10px;
+  font-size: calc(10px + 0.6vw);
+}
+
+.new-link-dir-form input:focus{
+  outline: none;
+  border-bottom: 1px solid var(--dark-button-color);
+}
+
+.form-details{
+  display: grid;
+  gap: 10px;
+}
+
+.add-link-btn{
+  background-color: var(--dark-primary-color);
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.link-input{
+  display: grid;
+  gap:10px;
+  background-color: var(--dark-primary-color);
+  padding: 10px 10px 20px 10px;
+  border-radius: 8px;
+}
+
+.link-input input{
+  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--dark-secondary-color);
+  color: var(--dark-text-color);
+  font-size: calc(10px + 0.6vw);
+  border: none;
+}
+
+.link-input input:focus{
+  outline: 1px solid var(--dark-button-color);
+  border: none;
+}
+
+.new-link-dir-form button{
+  background-color: var(--dark-button-color);
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--dark-text-color);
+  border: none;
+}
+
+.link-input label{
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.link-input label span{
+  margin-left: auto;
+  cursor: pointer;
+  color: var(--dark-text-color);
+  font-weight: bold;
+  font-size: 20px;
+}
 
 
 @media screen and (max-width: 600px) {
