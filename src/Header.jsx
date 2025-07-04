@@ -47,7 +47,7 @@ function Header(props){
 
 
     const clearLocalStorage = async()=>{
-        localStorage.clear()
+        localStorage.setItem("linkhistory", JSON.stringify([]))
     }
 
 

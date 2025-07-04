@@ -1,8 +1,7 @@
 import { db } from "./firebase";
-import { addDoc, collection, setDoc, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, setDoc, doc, getDoc, getDocs, query } from "firebase/firestore";
 import bcrypt from "bcryptjs";
-
-
+import { use } from "react";
 
 // for large strings, use this from https://stackoverflow.com/a/49124600
 const buff_to_base64 = (buff) => btoa(
@@ -212,4 +211,69 @@ export async function checkPSWD(enteredPSWD, hasedPassword){
 export async function decryptURL(encryptedData, password) {
     const decryptedData = await decryptData(encryptedData, password);
     return decryptedData
+}
+
+
+export async function createNewLinkDir(linkDirName, linkDirDesc, links, userId) {
+  try {
+      const docRef = await addDoc(collection(db, "LinkDirCenter"), {
+          linkDirName: linkDirName,
+          linkDirDesc: linkDirDesc,
+          userId: userId || "defaultUser" // Default user if not provided
+      });
+      console.log("Document written with ID: ", docRef.id);
+
+      // Add links to the new Link Directory
+      for (const link of links) {
+          await addDoc(collection(db, `LinkDirCenter/${docRef.id}/links`), {
+              linkName: link.linkName,
+              linkURL: link.linkURL
+          });
+      }
+
+      return docRef.id;
+
+  } catch (e) {
+      console.error("Error adding document: ", e);
+  }
+}
+
+
+
+export async function getLinkDir(linkDirId) {
+
+
+    const docRef = doc(db, "LinkDirCenter", linkDirId);
+    const docSnap = await getDoc(docRef);
+    const tempDataHolder = {
+        linkDirName: "",
+        linkDirDesc: "",
+        links: []
+    }
+
+    if (docSnap.exists()) {
+        // console.log("Document data:", docSnap.data());
+        tempDataHolder.linkDirName = docSnap.data().linkDirName;
+        tempDataHolder.linkDirDesc = docSnap.data().linkDirDesc;
+    } else {
+        console.log("No such document!");
+    }
+
+
+    const linksRef = collection(db, `LinkDirCenter/${linkDirId}/links`);
+    const linksQuery = query(linksRef);
+    
+    const linksSnapshot = await getDocs(linksQuery);
+
+    linksSnapshot.forEach((doc) => {
+        // console.log(doc.id, " => ", doc.data());
+        tempDataHolder.links.push({
+            linkName: doc.data().linkName,
+            linkURL: doc.data().linkURL,
+            id: doc.id
+        });
+    });
+
+    return tempDataHolder;
+
 }

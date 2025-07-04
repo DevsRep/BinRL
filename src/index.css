@@ -8,7 +8,9 @@
   --dark-primary-color : rgb(37, 37, 37);
   --dark-secondary-color : rgb(50, 50, 50);
   --dark-text-color : rgb(255, 255, 255);
+  --dark-text-hint-color : rgb(186, 186, 186);
   --dark-button-color : #4A90E2;
+  --dark-blue-color-translu : #6b6b6b60;
   --clear-btn-bg : #c55555;
 }
 
@@ -474,6 +476,128 @@ input{
   font-weight: bold;
   font-size: 20px;
 }
+
+.link-dir-page-cont{
+  /* background-color: var(--dark-secondary-color); */
+  display: grid;
+  place-items: center;
+  padding: 50px 0;
+}
+
+.link-dir-page{
+  width: calc(30vw + 150px);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--dark-secondary-color);
+  display: grid;
+  gap: 20px;
+}
+
+.empty-link-dir{
+  display: grid;
+  padding: 20px;
+  background-color: var(--dark-secondary-color);
+  border-radius: 10px;
+  gap: 10px;
+}
+
+.empty-link-dir-btn{
+  display: grid;
+  place-items: center;
+  background-color: var(--dark-button-color);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--dark-text-color);
+  text-decoration: none;
+}
+
+
+.link-dir-pre-load-info{
+  display: grid;
+  place-items: center;
+  padding: 20px 0;
+}
+
+.link-dir-cont{
+  display: grid;
+  /* padding: 20px; */
+  gap:20px;
+}
+
+.link-dir-info{
+  display: grid;
+  /* gap:8px; */
+}
+
+.link-dir-info h3{
+  font-size: calc(20px + 1vw);
+  font-weight: bold;
+  color: var(--dark-text-color);
+  padding-bottom: 5px;
+  border-bottom: 0.5px solid var(--dark-text-color);
+}
+
+.link-dir-info p{
+  font-size: calc(10px + 0.6vw);
+  color: var(--dark-text-color);
+  padding-top: 5px;
+} 
+
+.link-dir-links{
+  display: grid;
+  gap:13px;
+}
+
+.link-item{
+  background-color: var(--dark-primary-color);
+  border-radius: 10px;
+  color: var(--dark-text-color);
+  transition: all 250ms;
+}
+
+.link-item:hover{
+  box-shadow: 0 0 7px 1px var(--dark-blue-color-translu);
+}
+
+.link-item:hover  a .link-item-url{
+  color: #dfdfdf;
+
+}
+
+
+.link-item a{
+  text-decoration: none;
+  color: var(--dark-text-color);
+  font-size: calc(10px + 0.6vw);
+  display: grid;
+  gap:7px;
+  padding: 15px;
+}
+
+.link-item a .link-item-name{
+  font-weight: bold;
+  font-size: calc(15px + 0.5vw);
+}
+
+.link-item a .link-item-url{
+  font-size: calc(10px + 0.6vw);
+  /* word-break: break-all; */
+  /* word-wrap: break-word; */
+  color: var(--dark-text-hint-color);
+  overflow: hidden;
+  /* width: 100%; */
+  text-overflow: ellipsis;
+  transition: all 250ms;
+  
+}
+
+/* .link-item a .link-item-url:hover{
+  overflow: visible;
+  word-break: break-all; 
+  word-wrap: break-word;
+} */
+
 
 
 @media screen and (max-width: 600px) {
