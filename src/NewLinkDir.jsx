@@ -61,20 +61,23 @@ function NewLinkDir(){
 
         if(linkDirName.trim() === ""){
             alert("Link Directory Name cannot be empty.");
+            setLoading(false);
+
             return;
         }
 
         if(linkData.some(link => link.linkName.trim() === "" || link.linkURL.trim() === "")){
             alert("All link fields must be filled out.");
+            setLoading(false);
             return;
         }
         
-        await createNewLinkDir(linkDirName, linkDirDesc, linkData, localStorage.getItem("userId"))
+        await createNewLinkDir(linkDirName, linkDirDesc, linkData, localStorage.getItem("userID"))
             .then((linkDirId) => {
                 console.log("New Link Directory created with ID:", linkDirId);
                 alert("Link Directory created successfully!");
                 // Optionally, redirect to the new Link Directory page
-                window.location.href = `/links`;
+                window.location.href = `/linkdir`;
             })
             .catch((error) => {
                 console.error("Error creating Link Directory:", error);

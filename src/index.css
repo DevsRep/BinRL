@@ -70,6 +70,8 @@ header h1{
   right: 0;
   background-color: var(--dark-secondary-color);
   transition: all 250ms;
+  border-radius: 10px 0 0 10px;
+  box-shadow: 0 0 10px 0.5px var(--dark-blue-color-translu);
 }
 
 
@@ -185,6 +187,13 @@ header h1{
   background-color: var(--clear-btn-bg);
   border-radius: 10px;
   cursor: pointer;
+}
+
+.empty-blk-hint{
+  padding: 20px;
+  text-align: center;
+  color: #a0a0a0;
+
 }
 
 
@@ -346,6 +355,7 @@ input{
   display: grid;
   justify-content: center;
   padding: 20px;
+  gap: 12px ;
 }
 
 .link-dir-list > *{

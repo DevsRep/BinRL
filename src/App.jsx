@@ -17,9 +17,9 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
-        <Route path='/links' element={<LinksPage />}>
+        <Route path='/linkdir' element={<LinksPage />}>
           <Route index element={<LinkDirHome />} />
-          <Route path="/links/new" element={<NewLinkDir />}/>
+          <Route path="/linkdir/new" element={<NewLinkDir />}/>
         </Route>
         <Route path="/l" element={<LinkDirPage />}>
           <Route path=':id' element={<LinkDir />} />

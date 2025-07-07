@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { addDoc, collection, setDoc, doc, getDoc, getDocs, query } from "firebase/firestore";
+import { addDoc, collection, setDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import bcrypt from "bcryptjs";
 import { use } from "react";
 
@@ -214,12 +214,31 @@ export async function decryptURL(encryptedData, password) {
 }
 
 
+
+export async function getAllLinkDir(userID){
+  const q = query(collection(db, "LinkDirCenter"), where("userID", "==", userID));
+
+  const querySnapshot = await getDocs(q);
+
+  const linkDirList = []
+  
+  querySnapshot.forEach((doc) => {
+    linkDirList.push(doc.data())
+  }); 
+
+  console.log(linkDirList)
+
+  return linkDirList
+
+}
+
+
 export async function createNewLinkDir(linkDirName, linkDirDesc, links, userId) {
   try {
       const docRef = await addDoc(collection(db, "LinkDirCenter"), {
           linkDirName: linkDirName,
           linkDirDesc: linkDirDesc,
-          userId: userId || "defaultUser" // Default user if not provided
+          userID: userId || "defaultUser" // Default user if not provided
       });
       console.log("Document written with ID: ", docRef.id);
 

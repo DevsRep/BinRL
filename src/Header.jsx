@@ -70,16 +70,16 @@ function Header(props){
 
             <div className="navLinks">
                 <div onClick={handlePrevLinksBtn}>Your Links</div>
-                <Link to={"/links"}><div>LinkDir</div></Link>
+                <Link to={"/linkdir"}><div>LinkDir</div></Link>
             </div>
 
-            <div className="prev-links-list-cont">
+            <div className="prev-links-list-cont" style={{width:"0px"}}>
                 <div className="prev-list-header">
                     <h3 className="prv-list-text">History</h3>
                     <div className="close-btn" onClick={handlePrevLinksBtn}>&times;</div>
                 </div>
                 {
-                linkshistory ? (
+                linkshistory.length>0 ? (
                     linkshistory.reverse().map((element, index) => (
                     <PrevLinksTemp
                         key={index}
@@ -90,9 +90,10 @@ function Header(props){
                     />
                     ))
                 ) : (
-                    <></>
+                    <div className="empty-blk-hint">Start Shortening your Looooonnnngggg URL's to make History</div>
                 )
                 }
+
 
                 
                 {/* <div className="prev-link">
@@ -118,7 +119,7 @@ function Header(props){
                 </div> */}
 
                                 {
-                linkshistory ? (
+                linkshistory.length >0 ? (
                     <div className="clear-history-btn-cont">
                         <div className="clear-history-btn" onClick={clearLocalStorage}>
                             Clear

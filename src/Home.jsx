@@ -9,13 +9,15 @@ function Home() {
   const [userID, setUserID] = useState("")
 
   useEffect(()=>{
-    if(localStorage.getItem("userID") == ""){
+    if(!localStorage.getItem("userID")){
+      
       const userIDTemp = uuidv4()
       localStorage.setItem("userID", userIDTemp)
       setUserID(userIDTemp)
     }else{
       setUserID(localStorage.getItem("userID"))
     }
+    // console.log(localStorage.getItem("userID"))
   }, [])
 
 

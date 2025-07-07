@@ -12,7 +12,7 @@ function LinksPage(){
     
 
     useEffect(()=>{
-        if(localStorage.getItem("userID") == ""){
+        if(!localStorage.getItem("userID")){
         const userIDTemp = uuidv4()
         localStorage.setItem("userID", userIDTemp)
         setUserID(userIDTemp)
