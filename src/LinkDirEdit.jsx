@@ -1,14 +1,23 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { createNewLinkDir } from "./firebaseQueries"
 
 
-function NewLinkDir(){
+function LinkDirEdit(){
 
     const [noLinks, setNoLinks] = useState(1)
     const [loading, setLoading] = useState(false)
 
     const [linkData, setLinkData] = useState([{linkName: "", linkURL: ""}])
 
+    const [linkDirId, setLinkDirId] = useState(null);
+
+    useEffect(() => {
+
+        const paramSearcher = new URLSearchParams(window.location.search);
+        
+        setLinkDirId(paramSearcher.get("id"))
+        
+    },[])
 
     const addLink = () => {
         if(noLinks < 20){
@@ -96,6 +105,7 @@ function NewLinkDir(){
                 <h2>Loading Link Directory...</h2>
             </div>
         ):
+        linkDirId ?(
         <div className="new-link-dir-form-cont">
 
             <form className="new-link-dir-form" onSubmit={handleFormSubmit}>
@@ -139,8 +149,8 @@ function NewLinkDir(){
 
                 <button type="submit" onClick={NewLinkDir}>Create</button>
             </form>
-        </div>
+        </div>):<p>No Link Directory to edit...</p>
     )
 }
 
-export default NewLinkDir
+export default LinkDirEdit

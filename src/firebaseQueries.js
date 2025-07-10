@@ -223,7 +223,7 @@ export async function getAllLinkDir(userID){
   const linkDirList = []
   
   querySnapshot.forEach((doc) => {
-    linkDirList.push(doc.data())
+    linkDirList.push({...doc.data(), linkDirID: doc.id})
   }); 
 
   console.log(linkDirList)

@@ -26,12 +26,15 @@ function LinkDirHome(){
     return(
         <div className="link-dir-list">
             {
-                linkDirList.length >= 0 ? 
-                    linkDirList.map((element) => (
-                        <div className="new-link-dir-cre-cont" key={element.linkDirName}>
+                linkDirList.length > 0 ? (
+                linkDirList.map((element) => (
+                    <Link  to={`/linkdir/edit?id=${element.linkDirID}`} style={{ textDecoration: "none" }} key={element.linkDirName}>
+                        <div className="new-link-dir-cre-cont">
                             <h3>{element.linkDirName}</h3>  
                         </div>
-                    )) : <></>
+                    </Link>
+                ))
+                ) : null
             }
 
             <Link to={"/linkdir/new"}>
