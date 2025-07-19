@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 // import { useNavigate } from "react-router-dom"
-import { redirectURL, isPasswordProtected, checkPSWD, decryptURL } from "./firebaseQueries"
+import { redirectURL, checkPSWD, decryptURL } from "./firebaseQueries"
 
 function Page(){
 
@@ -58,7 +58,7 @@ function Page(){
         redirectURL(id)
             .then((data) => {
                 if(data){
-                    if (data.password !== "") {
+                    if (data.password !== null) {
                         // console.log("This URL is password protected");
                         setIsProtected(true);
                         setData(data)

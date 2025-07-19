@@ -115,6 +115,24 @@ export async function getShortenedUrlCP(longUrl, password, customUrl) {
 }
 
 
+
+export async function getShortenedUrlCust(longUrl, customUrl) {
+
+    try{
+
+        const docRef = await setDoc(doc(db, "URLcenter", customUrl), {
+            url : longUrl,
+            password: null,
+        });
+        console.log("Document written with ID: ", docRef);
+
+    }catch (e) {
+        console.error("Error adding document: ", e);
+    }
+
+}
+
+
 export async function getShortenedUrlP(longUrl, password) {
 
     try{
@@ -155,7 +173,7 @@ export async function getShortenedUrl(longUrl) {
     try{
         const docRef = await addDoc(collection(db, "URLcenter"), {
             url : longUrl,
-            password: "",
+            password: null,
         })
         console.log("Document written with ID: ", docRef);
         return docRef.id;

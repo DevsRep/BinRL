@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getShortenedUrl, getShortenedUrlP, getShortenedUrlCP } from "./firebaseQueries";
+import { getShortenedUrl, getShortenedUrlP, getShortenedUrlCP, getShortenedUrlCust } from "./firebaseQueries";
 
 function URLShortener(){
 
@@ -98,7 +98,7 @@ function URLShortener(){
                 return 
             }
 
-            if(custVal == "links"){
+            if(custVal == "linkdir" || custVal == "links"){
                 alert("The alias `links` is reserved")
                 return
             }
@@ -116,7 +116,7 @@ function URLShortener(){
 
         setUrl(givenURL);
         try{
-            if(customUrl && passwordurl){
+            if(customUrl && passwordurl != ""){
                 const customURL = document.querySelector(".customURL-i-cont input").value;
                 const password = document.querySelector(".customURL-i-cont input[type='password']").value;
                 await getShortenedUrlCP(givenURL, password, customURL);
@@ -125,7 +125,7 @@ function URLShortener(){
                 pswd = password
             }else if(customUrl){
                 const customURL = document.querySelector(".customURL-i-cont input").value;
-                await getShortenedUrlCP(givenURL, "", customURL);
+                await getShortenedUrlCust(givenURL, customURL);
                 setShortenedUrl("comprl.web.app/" + customURL);
                 shortenedURL = `comprl.web.app/${customURL}`
             }else if(passwordurl){
