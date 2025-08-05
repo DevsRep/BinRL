@@ -20,7 +20,7 @@ function App() {
         <Route path='/linkdir' element={<LinksPage />}>
           <Route index element={<LinkDirHome />} />
           <Route path="/linkdir/new" element={<NewLinkDir />}/>
-          <Route path="/linkdir/edit" element={<LinkDirEdit />}/>
+          {/* <Route path="/linkdir/edit" element={<LinkDirEdit />}/> */}
         </Route>
         <Route path="/l" element={<LinkDirPage />}>
           <Route path=':id' element={<LinkDir />} />

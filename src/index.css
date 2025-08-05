@@ -374,8 +374,9 @@ input{
   cursor: pointer;
 }
 
-.new-link-dir-cre-cont:hover{
-  box-shadow: 0 0 10px 1px var(--dark-secondary-color);
+.link-dir-setting-btn:hover{
+  box-shadow: 0 0 5px 1px #a9a9a92c;
+  /* border: 1px solid red; */
 }
 
 
@@ -465,6 +466,26 @@ input{
 
 .new-link-dir-form button{
   background-color: var(--dark-button-color);
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--dark-text-color);
+  border: none;
+}
+
+.link-dir-settings-cont{
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.link-dir-settings-cont a{
+  text-decoration: none;
+}
+
+.link-dir-setting-btn{
+  background-color: var(--dark-primary-color);
   padding: 10px;
   text-align: center;
   border-radius: 6px;
@@ -612,6 +633,21 @@ input{
 
 @media screen and (max-width: 600px) {
 
+
+  header{
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    gap:10px;
+    padding: 10px 20px;
+    /* border: 1px solid red; */
+  }
+  
+  .navLinks{
+    margin: auto;
+    gap:25px;
+  }
+
   .urlShortener-i-cont h2{
     font-size: calc(13px + 2vw);
   }
@@ -640,6 +676,15 @@ input{
 
   .close-btn{
     font-size: calc(20px + 2vw);
+  }
+
+
+  .link-dir-list{
+    padding: 20px 0;
+  }
+  
+  .new-link-dir-cre-cont{
+    width: auto;
   }
 
 }

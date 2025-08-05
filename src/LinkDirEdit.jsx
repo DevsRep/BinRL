@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { createNewLinkDir } from "./firebaseQueries"
+import { createNewLinkDir, getLinkDir } from "./firebaseQueries"
 
 
 function LinkDirEdit(){
@@ -7,7 +7,7 @@ function LinkDirEdit(){
     const [noLinks, setNoLinks] = useState(1)
     const [loading, setLoading] = useState(false)
 
-    const [linkData, setLinkData] = useState([{linkName: "", linkURL: ""}])
+    const [linkData, setLinkData] = useState(null)
 
     const [linkDirId, setLinkDirId] = useState(null);
 
@@ -18,6 +18,32 @@ function LinkDirEdit(){
         setLinkDirId(paramSearcher.get("id"))
         
     },[])
+
+
+    const fetchLinkDirData = async (linkDirId) => {
+
+        setLoading(true);
+
+        if(linkDirId){
+            const tempData = await getLinkDir(linkDirId);
+            console.log("Fetched Link Directory Data:", tempData);
+            if(tempData){
+                setLinkData(tempData || []);
+                setNoLinks(tempData.links ? tempData.links.length : 1);
+            } else {
+                console.error("No data found for Link Directory ID:", linkDirId);
+            }
+        } 
+
+        setLoading(false);
+    }
+
+
+    useEffect(()=>{
+
+        fetchLinkDirData(linkDirId)
+
+    },[linkDirId])
 
     const addLink = () => {
         if(noLinks < 20){
@@ -105,19 +131,19 @@ function LinkDirEdit(){
                 <h2>Loading Link Directory...</h2>
             </div>
         ):
-        linkDirId ?(
+        linkDirId && linkData ?(
         <div className="new-link-dir-form-cont">
 
             <form className="new-link-dir-form" onSubmit={handleFormSubmit}>
                 <h2>Create a new Link Directory</h2>
                 <div className="form-details">
                     <label htmlFor="linkDirName">Link Directory Name:</label>
-                    <input type="text" id="linkDirName" name="linkDirName" placeholder="Enter Link Directory Name" required />
+                    <input type="text" id="linkDirName" name="linkDirName" placeholder="Enter Link Directory Name" value={linkData.linkDirName} required />
                 </div>
 
                 <div className="form-details">
                     <label htmlFor="linkDirDesc">Description:</label>
-                    <input type="text" id="linkDirDesc" name="linkDirDesc" placeholder="Enter Description (optional)" />
+                    <input type="text" id="linkDirDesc" name="linkDirDesc" placeholder="Enter Description (optional)" value={linkData.linkDirDesc}/>
                 </div>
 
                 <div className="form-details">
@@ -131,7 +157,7 @@ function LinkDirEdit(){
                             <input type="url" name="linkURL" placeholder="Link URL" required />
                         </div> */}
                         {
-                        linkData.map((link, index) => (
+                        linkData.links.map((link, index) => (
                             <div className="link-input" key={index}>
                                 <label htmlFor={`linkName${index}`}>Link {index + 1} {noLinks >1 ? <span onClick={() => deleteLinkBlock(index)}>&times;</span> : <></>}</label>
                                 <input type="text" name={`linkName${index}`} value={link.linkName} placeholder="Link Name" required onChange={(e)=>handleLinkInputNameChange(e, index)}/>
@@ -147,7 +173,7 @@ function LinkDirEdit(){
                     </div>
                 </div>
 
-                <button type="submit" onClick={NewLinkDir}>Create</button>
+                <button type="submit" onClick={NewLinkDir}>Save Edits</button>
             </form>
         </div>):<p>No Link Directory to edit...</p>
     )

@@ -28,11 +28,16 @@ function LinkDirHome(){
             {
                 linkDirList.length > 0 ? (
                 linkDirList.map((element) => (
-                    <Link  to={`/linkdir/edit?id=${element.linkDirID}`} style={{ textDecoration: "none" }} key={element.linkDirName}>
-                        <div className="new-link-dir-cre-cont">
+                    // <Link  to={`/linkdir/edit?id=${element.linkDirID}`} style={{ textDecoration: "none" }} key={element.linkDirName}>
+                        <div className="new-link-dir-cre-cont" key={element.linkDirName}>
                             <h3>{element.linkDirName}</h3>  
+
+                            <div className="link-dir-settings-cont">
+                                {/* <a href={`/linkdir/edit?id=${element.linkDirID}`}><div className="link-dir-setting-btn">Edit</div></a> */}
+                                <a href={`/l/${element.linkDirID}`} target="_blank"><div className="link-dir-setting-btn">View</div></a>  
+                            </div>
                         </div>
-                    </Link>
+                    // </Link>
                 ))
                 ) : null
             }
