@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 // import { useNavigate } from "react-router-dom"
-import { redirectURL, checkPSWD, decryptURL } from "./firebaseQueries"
+import { redirectURL,  } from "./firebaseQueries"
+import { getURLbyID, decryptURL, checkPSWD } from "./BackendQueries"
 
 function Page(){
 
@@ -26,23 +27,23 @@ function Page(){
         
         const check = await checkPSWD(password, data.password)
 
-        console.log(`checking => ${check}`)
+        // console.log(`checking => ${check}`)
 
         if(check){
-            console.log(data.url);
+            // console.log(data.url);
             let redirectURL
             await decryptURL(data.url, password)
                 .then((decryptedURL) => {
-                    console.log("decrypting")
+                    // console.log("decrypting")
                     redirectURL = decryptedURL;
-                    console.log(redirectURL)
+                    // console.log(redirectURL)
                 })
                 .catch((error) => {
                     console.error("Error decrypting URL:", error);
                     setError("Failed to decrypt the URL. Please try again.");
                     return;
                 });
-            console.log(redirectURL);
+            // console.log(redirectURL);
             // setTimeout(()=>{
 
             window.location.href = `${redirectURL}`;
@@ -55,20 +56,22 @@ function Page(){
 
     useEffect(() => {
         // window.location.href = `//google.com`;
-        redirectURL(id)
+        // redirectURL(id)
+        getURLbyID(id)
             .then((data) => {
                 if(data){
-                    if (data.password !== null) {
+                    // console.log(data)
+                    if (data.password && data.password !== null) {
                         // console.log("This URL is password protected");
                         setIsProtected(true);
                         setData(data)
                         setLoading(false);
                     }else{
-                        
+                        // console.log("NO PSWD")
                         if(!data){
                             setLoading(false)
                         }
-                        window.location.href = data.url;
+                        // window.location.href = data.url;
                     }
                 }else{
                     setLoading(false)

@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getShortenedUrl, getShortenedUrlP, getShortenedUrlCP, getShortenedUrlCust } from "./firebaseQueries";
+
+import { getShortenedUrlAI, getShortenedUrlAPI, getShortenedUrlWPswd } from "./BackendQueries";
 
 function URLShortener(){
 
@@ -7,6 +9,15 @@ function URLShortener(){
     const [shortenedUrl, setShortenedUrl] = useState("");
     const [customUrl, setCustomUrl] = useState(false);
     const [passwordurl, setPasswordurl] = useState(false);
+    const [aisluggen, setAisluggen] = useState(false);
+
+    // useEffect(() => {
+    //     getShortenedUrlAPI("https://www.google.com").then((data)=>{
+    //         console.log("Backend API Test Shortened URL: ", data);
+    //     }).catch((e)=>{
+    //         console.error("Error in Backend API Test: ", e);
+    //     })
+    // })
     
 
     const handleSubmit = (e) => {
@@ -38,6 +49,37 @@ function URLShortener(){
         }
     }
 
+    const makeitnew = (e) =>{
+        setShortenedUrl("")
+    }
+
+    const handleAIURL = (e) => {
+        // aisluggenbtn = document.querySelector(".aislugop")
+        if(aisluggen){
+            setAisluggen(false);
+            document.querySelector(".aislugop").style.backgroundColor = "transparent";
+            document.querySelector(".URLblk").style.display = "block";
+        }else{
+            setAisluggen(true);
+            document.querySelector(".aislugop").style.backgroundColor = "#3a7bd5";
+            document.querySelector(".URLblk").style.display = "none";
+        }
+    }
+
+    const handleSlugGenMethod = (e) => {
+        const method = e.target.value;
+        if(method === "custom"){
+            setCustomUrl(true);
+            setAisluggen(false);
+        } else if (method === "ai"){
+            setAisluggen(true);
+            setCustomUrl(false);
+        }else {
+            setCustomUrl(false);
+            setAisluggen(false);
+        }
+    }
+
     const copyToClipboard = () => {
         navigator.clipboard.writeText(shortenedUrl)
             .then(() => {
@@ -52,6 +94,9 @@ function URLShortener(){
     }
 
     const handleURLshorten = async (e) => {
+
+        document.getElementById("urlshortensubmitbtn").disabled = true;
+
         const givenURL = document.querySelector(".URLinput").value;
         const pswdCont = document.querySelector(".customURL-i-cont input[type='password']")
         const custCont = document.querySelector(".customURL-i-cont input")
@@ -115,6 +160,7 @@ function URLShortener(){
         }
 
         setUrl(givenURL);
+        // console.log(customUrl + " " + passwordurl + " " + aisluggen)
         try{
             if(customUrl && passwordurl != ""){
                 const customURL = document.querySelector(".customURL-i-cont input").value;
@@ -123,6 +169,8 @@ function URLShortener(){
                 setShortenedUrl("comprl.web.app/" + customURL);
                 shortenedURL = `comprl.web.app/${customURL}`
                 pswd = password
+            }else if(aisluggen && passwordurl != ""){
+                console.log("AI slug with Password")
             }else if(customUrl){
                 const customURL = document.querySelector(".customURL-i-cont input").value;
                 await getShortenedUrlCust(givenURL, customURL);
@@ -130,9 +178,13 @@ function URLShortener(){
                 shortenedURL = `comprl.web.app/${customURL}`
             }else if(passwordurl){
                 const password = document.querySelector(".customURL-i-cont input[type='password']").value;
-                const ext = await getShortenedUrlP(givenURL, password);
-                setShortenedUrl("comprl.web.app/" + ext);
-                shortenedURL = `comprl.web.app/${ext}`
+                const ext = await getShortenedUrlWPswd(givenURL, password);
+                setShortenedUrl(ext);
+                shortenedURL = ext
+            }else if(aisluggen){
+                const ext = await getShortenedUrlAI(givenURL)
+                setShortenedUrl(ext);
+                shortenedURL = ext 
             }else{
                 const ext = await getShortenedUrl(givenURL);
                 setShortenedUrl("comprl.web.app/" + ext);
@@ -150,12 +202,13 @@ function URLShortener(){
 
             localStorage.setItem("linkhistory", JSON.stringify(currentState))
 
-            
+             document.getElementById("urlshortensubmitbtn").disabled = false;
 
         }catch(e){
             console.log('Sorrry there was an error. Oopss...')
         }
 
+         document.getElementById("urlshortensubmitbtn").disabled = false;
     }
 
     return (
@@ -163,8 +216,8 @@ function URLShortener(){
             <div className="urlShortener-i-cont">
                 <h2>Shorten Your looonnnggg... URL</h2>
                 <form className="urlShortenerForm" onSubmit={handleSubmit}>
-                    <input className="URLinput" type="text" placeholder="Enter URL to shorten"/>
-                    <button type="submit" onClick={handleURLshorten}>Shorten</button>
+                    <input className="URLinput" type="text" placeholder="Enter URL to shorten" onChange={makeitnew}/>
+                    <button type="submit" id="urlshortensubmitbtn" onClick={handleURLshorten}>Shorten</button>
                 </form>
 
                 
@@ -182,7 +235,15 @@ function URLShortener(){
 
                 <div className="extra-features">
                     <div className="extra-features-i-cont">
-                        <div className="URLblk extra-feature-block" onClick={handlecustURL}>Custom URL</div>
+                        {/* <div className="URLblk extra-feature-block" onClick={handlecustURL}>Custom URL</div>
+                        <div className="pswdBLK extra-feature-block" onClick={handlepswdURL}>Set Password</div>
+                        <div className="aislugop extra-feature-block" onClick={handleAIURL}>AI Slug Gen</div> */}
+                        <select className="extra-feature-block slug-mthd-btn" id="sluggenmethod" onChange={handleSlugGenMethod}>
+                            <option defaultValue={"random"}>Random Slug</option>
+                            <option value="custom">Custom Slug</option>
+                            <option value="ai">AI Generated Slug</option>
+                        </select>
+                        {/* <div className="aislugop extra-feature-block" onClick={handleAIURL}>AI Slug Gen</div> */}
                         <div className="pswdBLK extra-feature-block" onClick={handlepswdURL}>Set Password</div>
                     </div>
                 </div>
