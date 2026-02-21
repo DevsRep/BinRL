@@ -149,15 +149,26 @@ export async function getShortenedUrlAPI(longUrl) {
 }
 
 
-export async function getShortenedUrlCust(longUrl, customUrl) {
+export async function getShortenedUrlCust(longUrl, customUrl, password) {
 
     try{
-
-        const reqBody = {
-            long_url : longUrl,
-            custom_url: customUrl
+        let reqBody
+        if(password){
+            const hashedPswd = await bcrypt.hash(password, 10)
+            const encodedUrl = await encryptData(longUrl, password).then(data =>{return data})
+            reqBody = {
+                long_url : encodedUrl,
+                customSlug: customUrl,
+                password : hashedPswd
+            }
+        }else{
+            reqBody = {
+                long_url : longUrl,
+                customSlug: customUrl
+            }            
         }
-        const response = await fetch(`${BackendApiUrl}/shorten/custom`, {
+        
+        const response = await fetch(`${BackendApiUrl}/shortencustom`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -202,23 +213,38 @@ export async function getShortenedUrlWPswd(longUrl, password) {
     return data.shortUrl;
 }
 
-export async function getShortenedUrlAI(longUrl) {
+export async function getShortenedUrlAI(longUrl, password) {
 
-    const body = {
-        longUrl: longUrl
+    try{
+        let reqBody
+        if(password){
+            const hashedPswd = await bcrypt.hash(password, 10)
+            const encodedUrl = await encryptData(longUrl, password).then(data =>{return data})
+            reqBody = {
+                longUrl : encodedUrl,
+                password : hashedPswd
+            }
+        }else{
+            reqBody = {
+                longUrl : longUrl
+            }            
+        }
+
+        const response = await fetch(`${BackendApiUrl}/shortenai`, {
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqBody)
+        })
+
+        const data = await response.json();
+        console.log(data)
+        return data.shortUrl
+
+    }catch(e){
+        console.error("Oops there was some error ", e)
     }
-
-    const response = await fetch(`${BackendApiUrl}/shortenai`, {
-        method:'POST',
-        headers:{
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
-
-    const data = await response.json();
-    console.log(data)
-    return data.shortUrl
 }
 
 
