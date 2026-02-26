@@ -344,6 +344,18 @@ input{
   cursor: pointer;
   border: 1px solid var(--dark-button-color);
   transition: all 250ms;
+  background-color: transparent;
+  color: var(--dark-text-color);
+}
+
+
+.extra-feature-block option{
+  background-color: var(--dark-secondary-color);
+  color: var(--dark-text-color);
+}
+
+.slug-mthd-btn::after{
+  content: none;
 }
 
 /* .extra-feature-block:hover{

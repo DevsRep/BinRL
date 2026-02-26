@@ -71,7 +71,7 @@ function Page(){
                         if(!data){
                             setLoading(false)
                         }
-                        // window.location.href = data.url;
+                        window.location.href = data.url;
                     }
                 }else{
                     setLoading(false)

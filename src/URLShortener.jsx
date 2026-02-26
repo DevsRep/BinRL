@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getShortenedUrl, getShortenedUrlP, getShortenedUrlCP, getShortenedUrlCust } from "./firebaseQueries";
+import { getShortenedUrl, getShortenedUrlCP } from "./firebaseQueries";
 
-import { getShortenedUrlAI, getShortenedUrlAPI, getShortenedUrlWPswd } from "./BackendQueries";
+import { getShortenedUrlAI, getShortenedUrlAPI, getShortenedUrlWPswd, getShortenedUrlCust } from "./BackendQueries";
 
 function URLShortener(){
 
@@ -18,7 +18,6 @@ function URLShortener(){
     //         console.error("Error in Backend API Test: ", e);
     //     })
     // })
-    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -165,15 +164,18 @@ function URLShortener(){
             if(customUrl && passwordurl != ""){
                 const customURL = document.querySelector(".customURL-i-cont input").value;
                 const password = document.querySelector(".customURL-i-cont input[type='password']").value;
-                await getShortenedUrlCP(givenURL, password, customURL);
+                await getShortenedUrlCust(givenURL, customURL, password);
                 setShortenedUrl("comprl.web.app/" + customURL);
                 shortenedURL = `comprl.web.app/${customURL}`
                 pswd = password
             }else if(aisluggen && passwordurl != ""){
-                console.log("AI slug with Password")
+                const password = document.querySelector(".customURL-i-cont input[type='password']").value;
+                const ext = await getShortenedUrlAI(givenURL, password)
+                setShortenedUrl(ext);
+                shortenedURL = ext 
             }else if(customUrl){
                 const customURL = document.querySelector(".customURL-i-cont input").value;
-                await getShortenedUrlCust(givenURL, customURL);
+                await getShortenedUrlCust(givenURL, customURL, null);
                 setShortenedUrl("comprl.web.app/" + customURL);
                 shortenedURL = `comprl.web.app/${customURL}`
             }else if(passwordurl){
@@ -182,13 +184,13 @@ function URLShortener(){
                 setShortenedUrl(ext);
                 shortenedURL = ext
             }else if(aisluggen){
-                const ext = await getShortenedUrlAI(givenURL)
+                const ext = await getShortenedUrlAI(givenURL, null)
                 setShortenedUrl(ext);
                 shortenedURL = ext 
             }else{
-                const ext = await getShortenedUrl(givenURL);
-                setShortenedUrl("comprl.web.app/" + ext);
-                shortenedURL = `comprl.web.app/${ext}`
+                const ext = await getShortenedUrlAPI(givenURL);
+                setShortenedUrl(ext);
+                shortenedURL = ext
             }
 
             const currentState = JSON.parse(localStorage.getItem("linkhistory"))

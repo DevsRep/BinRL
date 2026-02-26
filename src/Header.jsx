@@ -61,7 +61,6 @@ function Header(props){
             setSideHitoryBar(false)
             cont.style.width = "0px"
         }
-
     }
 
     return(
@@ -70,7 +69,15 @@ function Header(props){
 
             <div className="navLinks">
                 <div onClick={handlePrevLinksBtn}>Your Links</div>
-                <Link to={"/linkdir"}><div>LinkDir</div></Link>
+                {
+                    subText === "Shortner" ? (
+                        <Link to={"/linkdir"}><div>LinkDir</div></Link>
+                    ) : (
+                        <Link to={"/"}><div>Shortner</div></Link>
+                    )
+                }
+                {/* <Link to={"/linkdir"}><div>LinkDir</div></Link>
+                <Link to={"/"}><div>Shortner</div></Link> */}
             </div>
 
             <div className="prev-links-list-cont" style={{width:"0px"}}>

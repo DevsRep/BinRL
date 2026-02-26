@@ -234,7 +234,7 @@ export async function decryptURL(encryptedData, password) {
 
 
 export async function getAllLinkDir(userID){
-  const q = query(collection(db, "LinkDirCenter"), where("userID", "==", userID));
+  const q = query(collection(db, "LinkDirCenter"), where("userId", "==", userID));
 
   const querySnapshot = await getDocs(q);
 
@@ -292,24 +292,25 @@ export async function getLinkDir(linkDirId) {
         // console.log("Document data:", docSnap.data());
         tempDataHolder.linkDirName = docSnap.data().linkDirName;
         tempDataHolder.linkDirDesc = docSnap.data().linkDirDesc;
+        tempDataHolder.links = docSnap.data().links || [];
     } else {
         console.log("No such document!");
     }
 
 
-    const linksRef = collection(db, `LinkDirCenter/${linkDirId}/links`);
-    const linksQuery = query(linksRef);
+    // const linksRef = collection(db, `LinkDirCenter/${linkDirId}/links`);
+    // const linksQuery = query(linksRef);
     
-    const linksSnapshot = await getDocs(linksQuery);
+    // const linksSnapshot = await getDocs(linksQuery);
 
-    linksSnapshot.forEach((doc) => {
-        // console.log(doc.id, " => ", doc.data());
-        tempDataHolder.links.push({
-            linkName: doc.data().linkName,
-            linkURL: doc.data().linkURL,
-            id: doc.id
-        });
-    });
+    // linksSnapshot.forEach((doc) => {
+    //     // console.log(doc.id, " => ", doc.data());
+    //     tempDataHolder.links.push({
+    //         linkName: doc.data().linkName,
+    //         linkURL: doc.data().linkURL,
+    //         id: doc.id
+    //     });
+    // });
 
     return tempDataHolder;
 

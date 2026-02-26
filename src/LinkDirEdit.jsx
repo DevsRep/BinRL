@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { createNewLinkDir, getLinkDir } from "./firebaseQueries"
+// import { createNewLinkDir } from "./firebaseQueries"
+import { getLinkDir, modifyLinkDir } from "./BackendQueries"
 
 
 function LinkDirEdit(){
@@ -28,12 +29,14 @@ function LinkDirEdit(){
             const tempData = await getLinkDir(linkDirId);
             console.log("Fetched Link Directory Data:", tempData);
             if(tempData){
-                setLinkData(tempData || []);
+                setLinkData(tempData);
                 setNoLinks(tempData.links ? tempData.links.length : 1);
             } else {
                 console.error("No data found for Link Directory ID:", linkDirId);
             }
         } 
+
+        console.log("Data", linkData)
 
         setLoading(false);
     }
@@ -48,7 +51,9 @@ function LinkDirEdit(){
     const addLink = () => {
         if(noLinks < 20){
         setNoLinks(noLinks + 1)
-        setLinkData([...linkData, {linkName: "", linkURL: ""}])
+        const temp = linkData
+        temp.links = [...temp.links, {linkName: "", linkURL: ""}]
+        setLinkData(temp)
         }else{
             alert("You can only add up to 20 links.");
         }
@@ -56,23 +61,23 @@ function LinkDirEdit(){
 
     const handleLinkInputNameChange = (e, index)=>{
         const value = e.target.value;
-        const tempLinkData = [...linkData];
-        tempLinkData[index]["linkName"] = value;
+        const tempLinkData = linkData;
+        tempLinkData.links[index]["linkName"] = value;
         setLinkData(tempLinkData);
     } 
 
     const handleLinkInputURLChange = (e, index)=>{
         const value = e.target.value;
-        const tempLinkData = [...linkData];
-        tempLinkData[index]["linkURL"] = value;
+        const tempLinkData = linkData
+        tempLinkData.links[index]["linkURL"] = value;
         setLinkData(tempLinkData);
     }
 
     const deleteLinkBlock = (index) => {
-        if(linkData.length > 1){
-            const tempLinkData = [...linkData];
+        if(linkData.links.length > 1){
+            const tempLinkData = linkData;
             console.log("Deleting link at index:", index);
-            console.log(tempLinkData.splice(index, 1))
+            console.log(tempLinkData.links.splice(index, 1))
             setLinkData(tempLinkData);
             setNoLinks(noLinks - 1);
         } else {
@@ -95,6 +100,7 @@ function LinkDirEdit(){
         const linkDirName = document.getElementById("linkDirName").value;
         const linkDirDesc = document.getElementById("linkDirDesc").value;
 
+
         if(linkDirName.trim() === ""){
             alert("Link Directory Name cannot be empty.");
             setLoading(false);
@@ -102,16 +108,23 @@ function LinkDirEdit(){
             return;
         }
 
-        if(linkData.some(link => link.linkName.trim() === "" || link.linkURL.trim() === "")){
+        if(linkData.links.some(link => link.linkName.trim() === "" || link.linkURL.trim() === "")){
             alert("All link fields must be filled out.");
             setLoading(false);
             return;
         }
+
+        const temp = linkData
+        temp.linkDirName = linkDirName
+        temp.linkDirDesc = linkDirDesc
+
+        setLinkData(temp)
+
         
-        await createNewLinkDir(linkDirName, linkDirDesc, linkData, localStorage.getItem("userID"))
+        await modifyLinkDir(temp)
             .then((linkDirId) => {
-                console.log("New Link Directory created with ID:", linkDirId);
-                alert("Link Directory created successfully!");
+                console.log("LinkDir updated:", linkDirId);
+                alert("Link Directory updated successfully!");
                 // Optionally, redirect to the new Link Directory page
                 window.location.href = `/linkdir`;
             })
@@ -138,12 +151,12 @@ function LinkDirEdit(){
                 <h2>Create a new Link Directory</h2>
                 <div className="form-details">
                     <label htmlFor="linkDirName">Link Directory Name:</label>
-                    <input type="text" id="linkDirName" name="linkDirName" placeholder="Enter Link Directory Name" value={linkData.linkDirName} required />
+                    <input type="text" id="linkDirName" name="linkDirName" placeholder="Enter Link Directory Name" defaultValue={linkData.linkDirName} required />
                 </div>
 
                 <div className="form-details">
                     <label htmlFor="linkDirDesc">Description:</label>
-                    <input type="text" id="linkDirDesc" name="linkDirDesc" placeholder="Enter Description (optional)" value={linkData.linkDirDesc}/>
+                    <input type="text" id="linkDirDesc" name="linkDirDesc" placeholder="Enter Description (optional)" defaultValue={linkData.linkDirDesc}/>
                 </div>
 
                 <div className="form-details">
@@ -160,8 +173,8 @@ function LinkDirEdit(){
                         linkData.links.map((link, index) => (
                             <div className="link-input" key={index}>
                                 <label htmlFor={`linkName${index}`}>Link {index + 1} {noLinks >1 ? <span onClick={() => deleteLinkBlock(index)}>&times;</span> : <></>}</label>
-                                <input type="text" name={`linkName${index}`} value={link.linkName} placeholder="Link Name" required onChange={(e)=>handleLinkInputNameChange(e, index)}/>
-                                <input type="url" name={`linkURL${index}`} value={link.linkURL} placeholder="Link URL" required onChange={(e) => handleLinkInputURLChange(e, index)}/>
+                                <input type="text" name={`linkName${index}`} defaultValue={link.linkName} placeholder="Link Name" required onChange={(e)=>handleLinkInputNameChange(e, index)}/>
+                                <input type="url" name={`linkURL${index}`} defaultValue={link.linkURL} placeholder="Link URL" required onChange={(e) => handleLinkInputURLChange(e, index)}/>
                             </div>
                         ))
                         }

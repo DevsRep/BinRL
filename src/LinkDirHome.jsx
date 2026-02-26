@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { getAllLinkDir } from "./firebaseQueries"
+import { getAllLinkDir } from "./BackendQueries.js"
 import { useEffect, useState } from "react"
 
 function LinkDirHome(){
@@ -33,7 +33,7 @@ function LinkDirHome(){
                             <h3>{element.linkDirName}</h3>  
 
                             <div className="link-dir-settings-cont">
-                                {/* <a href={`/linkdir/edit?id=${element.linkDirID}`}><div className="link-dir-setting-btn">Edit</div></a> */}
+                                <a href={`/linkdir/edit?id=${element.linkDirID}`}><div className="link-dir-setting-btn">Edit</div></a>
                                 <a href={`/l/${element.linkDirID}`} target="_blank"><div className="link-dir-setting-btn">View</div></a>  
                             </div>
                         </div>

@@ -24,7 +24,7 @@ function Home() {
   return (
     <div className="urlShortPage">
 
-        <Header />
+        <Header subText={"Shortner"}/>
         <URLShortener />
       
     </div>

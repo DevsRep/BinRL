@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { getLinkDir } from "./firebaseQueries"
+// import { getLinkDir } from "./firebaseQueries"
+import { getLinkDir } from "./BackendQueries";
 import { useParams } from "react-router-dom"
 
 

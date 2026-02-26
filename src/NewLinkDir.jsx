@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createNewLinkDir } from "./firebaseQueries"
+import { createNewLinkDir } from "./BackendQueries.js"
 
 
 function NewLinkDir(){
@@ -76,7 +76,7 @@ function NewLinkDir(){
         await createNewLinkDir(linkDirName, linkDirDesc, linkData, localStorage.getItem("userID"))
             .then((linkDirId) => {
                 console.log("New Link Directory created with ID:", linkDirId);
-                alert("Link Directory created successfully!");
+                alert("Link Directory created successfully! ID: " + linkDirId);
                 // Optionally, redirect to the new Link Directory page
                 window.location.href = `/linkdir`;
             })
