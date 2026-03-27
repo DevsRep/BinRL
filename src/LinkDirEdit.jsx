@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 // import { createNewLinkDir } from "./firebaseQueries"
-import { getLinkDir, modifyLinkDir } from "./BackendQueries"
+import { getLinkDirEdit, modifyLinkDir } from "./BackendQueries"
+import { useAuth } from "./AuthContext.jsx"
 
 
-function LinkDirEdit(){
+function LinkDirEdit() {
 
     const [noLinks, setNoLinks] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -12,29 +13,32 @@ function LinkDirEdit(){
 
     const [linkDirId, setLinkDirId] = useState(null);
 
+    const { getToken } = useAuth();
+
     useEffect(() => {
 
         const paramSearcher = new URLSearchParams(window.location.search);
-        
+
         setLinkDirId(paramSearcher.get("id"))
-        
-    },[])
+
+    }, [])
 
 
     const fetchLinkDirData = async (linkDirId) => {
 
         setLoading(true);
 
-        if(linkDirId){
-            const tempData = await getLinkDir(linkDirId);
+        if (linkDirId) {
+            const token = await getToken();
+            const tempData = await getLinkDirEdit(linkDirId, token);
             console.log("Fetched Link Directory Data:", tempData);
-            if(tempData){
+            if (tempData) {
                 setLinkData(tempData);
                 setNoLinks(tempData.links ? tempData.links.length : 1);
             } else {
                 console.error("No data found for Link Directory ID:", linkDirId);
             }
-        } 
+        }
 
         console.log("Data", linkData)
 
@@ -42,31 +46,31 @@ function LinkDirEdit(){
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
         fetchLinkDirData(linkDirId)
 
-    },[linkDirId])
+    }, [linkDirId])
 
     const addLink = () => {
-        if(noLinks < 20){
-        setNoLinks(noLinks + 1)
-        const temp = linkData
-        temp.links = [...temp.links, {linkName: "", linkURL: ""}]
-        setLinkData(temp)
-        }else{
+        if (noLinks < 20) {
+            setNoLinks(noLinks + 1)
+            const temp = linkData
+            temp.links = [...temp.links, { linkName: "", linkURL: "" }]
+            setLinkData(temp)
+        } else {
             alert("You can only add up to 20 links.");
         }
     }
 
-    const handleLinkInputNameChange = (e, index)=>{
+    const handleLinkInputNameChange = (e, index) => {
         const value = e.target.value;
         const tempLinkData = linkData;
         tempLinkData.links[index]["linkName"] = value;
         setLinkData(tempLinkData);
-    } 
+    }
 
-    const handleLinkInputURLChange = (e, index)=>{
+    const handleLinkInputURLChange = (e, index) => {
         const value = e.target.value;
         const tempLinkData = linkData
         tempLinkData.links[index]["linkURL"] = value;
@@ -74,7 +78,7 @@ function LinkDirEdit(){
     }
 
     const deleteLinkBlock = (index) => {
-        if(linkData.links.length > 1){
+        if (linkData.links.length > 1) {
             const tempLinkData = linkData;
             console.log("Deleting link at index:", index);
             console.log(tempLinkData.links.splice(index, 1))
@@ -100,15 +104,16 @@ function LinkDirEdit(){
         const linkDirName = document.getElementById("linkDirName").value;
         const linkDirDesc = document.getElementById("linkDirDesc").value;
 
+        const token = await getToken();
 
-        if(linkDirName.trim() === ""){
+        if (linkDirName.trim() === "") {
             alert("Link Directory Name cannot be empty.");
             setLoading(false);
 
             return;
         }
 
-        if(linkData.links.some(link => link.linkName.trim() === "" || link.linkURL.trim() === "")){
+        if (linkData.links.some(link => link.linkName.trim() === "" || link.linkURL.trim() === "")) {
             alert("All link fields must be filled out.");
             setLoading(false);
             return;
@@ -120,8 +125,8 @@ function LinkDirEdit(){
 
         setLinkData(temp)
 
-        
-        await modifyLinkDir(temp)
+
+        await modifyLinkDir(temp, token)
             .then((linkDirId) => {
                 console.log("LinkDir updated:", linkDirId);
                 alert("Link Directory updated successfully!");
@@ -132,63 +137,63 @@ function LinkDirEdit(){
                 console.error("Error creating Link Directory:", error);
                 alert("Failed to create Link Directory. Please try again.");
             })
-        
+
         setLoading(false);
 
     }
 
-    return(
+    return (
 
         loading ? (
             <div className="link-dir-pre-load-info">
                 <h2>Loading Link Directory...</h2>
             </div>
-        ):
-        linkDirId && linkData ?(
-        <div className="new-link-dir-form-cont">
+        ) :
+            linkDirId && linkData ? (
+                <div className="new-link-dir-form-cont">
 
-            <form className="new-link-dir-form" onSubmit={handleFormSubmit}>
-                <h2>Create a new Link Directory</h2>
-                <div className="form-details">
-                    <label htmlFor="linkDirName">Link Directory Name:</label>
-                    <input type="text" id="linkDirName" name="linkDirName" placeholder="Enter Link Directory Name" defaultValue={linkData.linkDirName} required />
-                </div>
+                    <form className="new-link-dir-form" onSubmit={handleFormSubmit}>
+                        <h2>Create a new Link Directory</h2>
+                        <div className="form-details">
+                            <label htmlFor="linkDirName">Link Directory Name:</label>
+                            <input type="text" id="linkDirName" name="linkDirName" placeholder="Enter Link Directory Name" defaultValue={linkData.linkDirName} required />
+                        </div>
 
-                <div className="form-details">
-                    <label htmlFor="linkDirDesc">Description:</label>
-                    <input type="text" id="linkDirDesc" name="linkDirDesc" placeholder="Enter Description (optional)" defaultValue={linkData.linkDirDesc}/>
-                </div>
+                        <div className="form-details">
+                            <label htmlFor="linkDirDesc">Description:</label>
+                            <input type="text" id="linkDirDesc" name="linkDirDesc" placeholder="Enter Description (optional)" defaultValue={linkData.linkDirDesc} />
+                        </div>
 
-                <div className="form-details">
-                    <label htmlFor="linkDirDesc">Your Links:</label>
+                        <div className="form-details">
+                            <label htmlFor="linkDirDesc">Your Links:</label>
 
-                    {/* <div className="link-inputs"> */}
-                        {/* <div className="link-input">
+                            {/* <div className="link-inputs"> */}
+                            {/* <div className="link-input">
                             <label htmlFor="linkName">Link {noLinks}</label>
                             
                             <input type="text" name="linkName" placeholder="Link Name" required />
                             <input type="url" name="linkURL" placeholder="Link URL" required />
                         </div> */}
-                        {
-                        linkData.links.map((link, index) => (
-                            <div className="link-input" key={index}>
-                                <label htmlFor={`linkName${index}`}>Link {index + 1} {noLinks >1 ? <span onClick={() => deleteLinkBlock(index)}>&times;</span> : <></>}</label>
-                                <input type="text" name={`linkName${index}`} defaultValue={link.linkName} placeholder="Link Name" required onChange={(e)=>handleLinkInputNameChange(e, index)}/>
-                                <input type="url" name={`linkURL${index}`} defaultValue={link.linkURL} placeholder="Link URL" required onChange={(e) => handleLinkInputURLChange(e, index)}/>
+                            {
+                                linkData.links.map((link, index) => (
+                                    <div className="link-input" key={index}>
+                                        <label htmlFor={`linkName${index}`}>Link {index + 1} {noLinks > 1 ? <span onClick={() => deleteLinkBlock(index)}>&times;</span> : <></>}</label>
+                                        <input type="text" name={`linkName${index}`} defaultValue={link.linkName} placeholder="Link Name" required onChange={(e) => handleLinkInputNameChange(e, index)} />
+                                        <input type="url" name={`linkURL${index}`} defaultValue={link.linkURL} placeholder="Link URL" required onChange={(e) => handleLinkInputURLChange(e, index)} />
+                                    </div>
+                                ))
+                            }
+
+                            {/* </div> */}
+
+                            <div className="add-link-btn" onClick={addLink}>
+                                Add another link +
                             </div>
-                        ))
-                        }
+                        </div>
 
-                    {/* </div> */}
-
-                    <div className="add-link-btn" onClick={addLink}>
-                        Add another link +
-                    </div>
-                </div>
-
-                <button type="submit" onClick={NewLinkDir}>Save Edits</button>
-            </form>
-        </div>):<p>No Link Directory to edit...</p>
+                        <button type="submit" onClick={NewLinkDir}>Save Edits</button>
+                    </form>
+                </div>) : <p>No Link Directory to edit...</p>
     )
 }
 

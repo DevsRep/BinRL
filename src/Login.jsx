@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "./AuthContext";
-import { Navigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Header from "./Header";
 
 
 function Login() {
+
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +19,7 @@ function Login() {
         try {
             setError(null);
             await login(email, password);
-            Navigate("/linkdir");
+            navigate("/linkdir");
         } catch (error) {
             setError("Failed to login", error);
         }
@@ -26,15 +28,15 @@ function Login() {
 
     return (
         <div className="login-o-cont">
-            <Header  />
+            <Header />
 
             <div className="login-cont">
                 <div className="login-i-cont">
                     <form onSubmit={handleSubmit} className="login-form">
                         <h2>Login</h2>
-                        {error && <p className="error" style={{color:"red", fontSize:"10px"}}>{error}</p>}
+                        {error && <p className="error" style={{ color: "red", fontSize: "10px" }}>{error}</p>}
                         <div className="form-group">
-                            <input 
+                            <input
                                 id="login-email"
                                 name="login-email"
                                 type="email"
@@ -45,7 +47,7 @@ function Login() {
                             />
                         </div>
                         <div className="form-group">
-                            <input 
+                            <input
                                 id="login-password"
                                 name="login-password"
                                 type="password"
@@ -60,14 +62,14 @@ function Login() {
 
                     </form>
 
-                    <div style={{color: 'var(--text-secondary)', padding: '0px 5px 7px 5px', fontSize: '14px'}}>
+                    <div style={{ color: 'var(--text-secondary)', padding: '0px 5px 7px 5px', fontSize: '14px' }}>
                         Don't have an account? <Link to="/register" style={{ color: 'var(--primary-color)' }}>Sign Up</Link>
                     </div>
                 </div>
 
             </div>
-            
-            
+
+
         </div>
     );
 }

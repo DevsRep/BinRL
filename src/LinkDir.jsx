@@ -2,22 +2,28 @@ import { useEffect, useState } from "react"
 // import { getLinkDir } from "./firebaseQueries"
 import { getLinkDir } from "./BackendQueries";
 import { useParams } from "react-router-dom"
+import { useAuth } from "./AuthContext";
 
 
-function LinkDir(){
+function LinkDir() {
 
-    const {id} = useParams();
+    const { id } = useParams();
+
+    const { getToken } = useAuth();
+
+
 
     const [linkDirData, setLinkDirData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null)
 
     const fetchLinkDir = async () => {
+        console.log(id)
         await getLinkDir(id)
             .then((linkDirData) => {
                 console.log("LinkDir Data:", linkDirData);
                 setLinkDirData(linkDirData);
-                if(!linkDirData){
+                if (!linkDirData) {
                     setError("LinkDir not found. Please check the ID and try again.");
                 }
             })
@@ -27,12 +33,12 @@ function LinkDir(){
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         document.querySelector(".empty-link-dir").style.display = "none"
         fetchLinkDir()
     }, [])
 
-    return(
+    return (
         !linkDirData || loading ? (
             <div className="link-dir-pre-load-info">
                 <h2>Loading Link Directory...</h2>
@@ -40,7 +46,7 @@ function LinkDir(){
         ) : error ? (
             <div className="link-dir-pre-load-info">
                 <div className="urlShortener-i-cont">
-                <h1>Oops..{error}</h1>
+                    <h1>Oops..{error}</h1>
                 </div>
             </div>
         ) : (
@@ -67,7 +73,7 @@ function LinkDir(){
                         </div>
                     ))}
 
-                    
+
                 </div>
             </div>
         )

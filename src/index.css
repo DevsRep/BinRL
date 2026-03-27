@@ -363,6 +363,45 @@ input{
 } */
 
 
+
+.login-cont{
+  display: grid;
+  place-items: center;
+  height: calc(100vh - 100px);
+}
+
+.login-i-cont{
+  background-color: var(--dark-secondary-color);
+  padding: 10px;
+  border-radius: 15px;
+  display: grid;
+  gap:20px;
+  transition: all 250ms;
+}
+
+.login-form{
+  padding: 10px;
+  display: grid;
+  gap:15px;
+  min-width: 27vw;
+}
+
+.login-form .form-group input{
+  display: block;
+  width: calc(100% - 20px);
+  border-radius: 5px;
+  font-size: calc(10px + 0.6vw);
+}
+
+.login-btn{
+  background-color: var(--dark-button-color);
+  border-radius: 5px;
+  border: none;
+  padding: 7px;
+}
+
+
+
 .link-dir-list{
   display: grid;
   justify-content: center;
@@ -655,6 +694,11 @@ input{
     /* border: 1px solid red; */
   }
   
+  .login-form{
+    min-width: 80vw;
+  }
+
+
   .navLinks{
     margin: auto;
     gap:25px;

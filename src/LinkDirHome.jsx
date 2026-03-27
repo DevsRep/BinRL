@@ -1,44 +1,57 @@
 import { Link } from "react-router-dom"
 import { getAllLinkDir } from "./BackendQueries.js"
 import { useEffect, useState } from "react"
+import { useAuth } from "./AuthContext.jsx"
 
-function LinkDirHome(){
+function LinkDirHome() {
 
     const [linkDirList, setLinkDirList] = useState([])
 
-    
-    const retriveData = async()=>{
-        const tempData = await getAllLinkDir(localStorage.getItem("userID"))
+    const { getToken } = useAuth();
+
+    const retriveData = async () => {
+        const token = await getTokenAsync();
+        const tempData = await getAllLinkDir(token)
         setLinkDirList(tempData)
     }
 
+    const getTokenAsync = async () => {
+        const token = await getToken();
+        return token;
+    }
 
-    useEffect(()=>{
+    // useEffect(async () => {
+    //     const token = await getTokenAsync();
+    //     // console.log(token)
+    // }, [])
+
+
+    useEffect(() => {
         retriveData()
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(linkDirList)
     }, [linkDirList])
 
 
 
-    return(
+    return (
         <div className="link-dir-list">
             {
                 linkDirList.length > 0 ? (
-                linkDirList.map((element) => (
-                    // <Link  to={`/linkdir/edit?id=${element.linkDirID}`} style={{ textDecoration: "none" }} key={element.linkDirName}>
+                    linkDirList.map((element) => (
+                        // <Link  to={`/linkdir/edit?id=${element.linkDirID}`} style={{ textDecoration: "none" }} key={element.linkDirName}>
                         <div className="new-link-dir-cre-cont" key={element.linkDirName}>
-                            <h3>{element.linkDirName}</h3>  
+                            <h3>{element.linkDirName}</h3>
 
                             <div className="link-dir-settings-cont">
                                 <a href={`/linkdir/edit?id=${element.linkDirID}`}><div className="link-dir-setting-btn">Edit</div></a>
-                                <a href={`/l/${element.linkDirID}`} target="_blank"><div className="link-dir-setting-btn">View</div></a>  
+                                <a href={`/l/${element.linkDirID}`} target="_blank"><div className="link-dir-setting-btn">View</div></a>
                             </div>
                         </div>
-                    // </Link>
-                ))
+                        // </Link>
+                    ))
                 ) : null
             }
 
@@ -48,7 +61,7 @@ function LinkDirHome(){
                     <p className="add-sign">+</p>
                 </div>
             </Link>
-        
+
         </div>
     )
 }
