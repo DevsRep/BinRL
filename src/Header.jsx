@@ -3,30 +3,30 @@ import PrevLinksTemp from "./PrevLinksTemp"
 import { Link } from "react-router-dom"
 
 
-function Header(props){
+function Header(props) {
 
     const [linkshistory, setHistory] = useState([])
     const [sideHistoryBar, setSideHitoryBar] = useState(false)
 
     const [subText, setSubText] = useState("")
 
-    useEffect(()=>{
-        if(props.subText != ""){
+    useEffect(() => {
+        if (props.subText != "") {
             setSubText(props.subText)
             console.log(subText)
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         // localStorage.clear()
-    
-        if(localStorage.length > 0){
+
+        if (localStorage.length > 0) {
             // console.log(localStorage)
             let temp = localStorage.getItem("linkhistory")
             temp = JSON.parse(temp)
             setHistory(temp)
 
-        }else{
+        } else {
             // let temp = [
             //     {
             //         actual : "google.com",
@@ -38,7 +38,7 @@ function Header(props){
             //         password : null
             //     }
             // ]
-            
+
             localStorage.setItem("linkhistory", JSON.stringify([]))
             // localStorage.setItem("shortnedLinks", JSON.stringify(temp))
             // localStorage.setItem("passwords", JSON.stringify(temp))
@@ -46,26 +46,26 @@ function Header(props){
     }, [sideHistoryBar])
 
 
-    const clearLocalStorage = async()=>{
+    const clearLocalStorage = async () => {
         localStorage.setItem("linkhistory", JSON.stringify([]))
     }
 
 
 
-    const handlePrevLinksBtn = () =>{
+    const handlePrevLinksBtn = () => {
         const cont = document.querySelector(".prev-links-list-cont")
-        if(cont.style.width == "0px"){
+        if (cont.style.width == "0px") {
             setSideHitoryBar(true)
             cont.style.width = 500 > window.innerWidth ? "100vw" : "500px"
-        }else{
+        } else {
             setSideHitoryBar(false)
             cont.style.width = "0px"
         }
     }
 
-    return(
+    return (
         <header>
-            <h1 className="appName">BinRL</h1>
+            <h1 className="appName">CompRL</h1>
 
             <div className="navLinks">
                 <div onClick={handlePrevLinksBtn}>Your Links</div>
@@ -80,29 +80,29 @@ function Header(props){
                 <Link to={"/"}><div>Shortner</div></Link> */}
             </div>
 
-            <div className="prev-links-list-cont" style={{width:"0px"}}>
+            <div className="prev-links-list-cont" style={{ width: "0px" }}>
                 <div className="prev-list-header">
                     <h3 className="prv-list-text">History</h3>
                     <div className="close-btn" onClick={handlePrevLinksBtn}>&times;</div>
                 </div>
                 {
-                linkshistory.length>0 ? (
-                    linkshistory.reverse().map((element, index) => (
-                    <PrevLinksTemp
-                        key={index}
-                        actual={element.actual}
-                        shortened={element.short}
-                        password={null}
-                        copyFunc = {async ()=>navigator.clipboard.writeText(element.short)}
-                    />
-                    ))
-                ) : (
-                    <div className="empty-blk-hint">Start Shortening your Looooonnnngggg URL's to make History</div>
-                )
+                    linkshistory.length > 0 ? (
+                        linkshistory.reverse().map((element, index) => (
+                            <PrevLinksTemp
+                                key={index}
+                                actual={element.actual}
+                                shortened={element.short}
+                                password={null}
+                                copyFunc={async () => navigator.clipboard.writeText(element.short)}
+                            />
+                        ))
+                    ) : (
+                        <div className="empty-blk-hint">Start Shortening your Looooonnnngggg URL's to make History</div>
+                    )
                 }
 
 
-                
+
                 {/* <div className="prev-link">
                     Actual Link:
                     <div className="i-blk actual-link-cont">
@@ -125,19 +125,19 @@ function Header(props){
                     </div>
                 </div> */}
 
-                                {
-                linkshistory.length >0 ? (
-                    <div className="clear-history-btn-cont">
-                        <div className="clear-history-btn" onClick={clearLocalStorage}>
-                            Clear
+                {
+                    linkshistory.length > 0 ? (
+                        <div className="clear-history-btn-cont">
+                            <div className="clear-history-btn" onClick={clearLocalStorage}>
+                                Clear
+                            </div>
                         </div>
-                    </div>
-                ) : (
-                    <></>
-                )
+                    ) : (
+                        <></>
+                    )
                 }
 
-  
+
 
             </div>
 

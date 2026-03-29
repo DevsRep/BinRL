@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 // import { useNavigate } from "react-router-dom"
-import { redirectURL,  } from "./firebaseQueries"
+// import { redirectURL,  } from "./firebaseQueries"
 import { getURLbyID, decryptURL, checkPSWD } from "./BackendQueries"
 
-function Page(){
+function Page() {
 
     const { id } = useParams()
 
@@ -22,14 +22,14 @@ function Page(){
     }
 
     const handleURLpswdSubmit = async (e) => {
-        
+
         const password = document.querySelector(".URLpswdinput").value;
-        
+
         const check = await checkPSWD(password, data.password)
 
         // console.log(`checking => ${check}`)
 
-        if(check){
+        if (check) {
             // console.log(data.url);
             let redirectURL
             await decryptURL(data.url, password)
@@ -48,10 +48,10 @@ function Page(){
 
             window.location.href = `${redirectURL}`;
             // },10000)
-        }else{
+        } else {
             setError("Incorrect password. Please try again.");
         }
-        
+
     }
 
     useEffect(() => {
@@ -59,55 +59,55 @@ function Page(){
         // redirectURL(id)
         getURLbyID(id)
             .then((data) => {
-                if(data){
+                if (data) {
                     // console.log(data)
                     if (data.password && data.password !== null) {
                         // console.log("This URL is password protected");
                         setIsProtected(true);
                         setData(data)
                         setLoading(false);
-                    }else{
+                    } else {
                         // console.log("NO PSWD")
-                        if(!data){
+                        if (!data) {
                             setLoading(false)
                         }
                         window.location.href = data.url;
                     }
-                }else{
+                } else {
                     setLoading(false)
                 }
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
             });
-    },[])
+    }, [])
 
 
-    return(
-       loading ? (
-        <div className="urlShortener">
-            <div className="urlShortener-i-cont">
-                <h2>Redirecting...</h2>
-            </div>
-        </div>
-       ) : isProtected ? (
+    return (
+        loading ? (
             <div className="urlShortener">
                 <div className="urlShortener-i-cont">
-                <h2>This URL is password protected</h2>
-                {error ? <p style={{"color":"red"}}>{error}</p> : <></>}
-                <form className="urlShortenerForm" onSubmit={handleSubmit}>
-                    <input className="URLpswdinput" type="password" placeholder="Enter the URL password..."/>
-                    <button type="submit" onClick={handleURLpswdSubmit}>Submit</button>
-                </form>
+                    <h2>Redirecting...</h2>
                 </div>
             </div>
-       ) : (
-        <div className="urlShortener">
-            <div className="urlShortener-i-cont">
-            <h1>Oops..Error</h1>
+        ) : isProtected ? (
+            <div className="urlShortener">
+                <div className="urlShortener-i-cont">
+                    <h2>This URL is password protected</h2>
+                    {error ? <p style={{ "color": "red" }}>{error}</p> : <></>}
+                    <form className="urlShortenerForm" onSubmit={handleSubmit}>
+                        <input className="URLpswdinput" type="password" placeholder="Enter the URL password..." />
+                        <button type="submit" onClick={handleURLpswdSubmit}>Submit</button>
+                    </form>
+                </div>
             </div>
-        </div>
-       )
+        ) : (
+            <div className="urlShortener">
+                <div className="urlShortener-i-cont">
+                    <h1>Oops..Error</h1>
+                </div>
+            </div>
+        )
     )
 }
 

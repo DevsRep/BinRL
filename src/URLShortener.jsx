@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { getShortenedUrl, getShortenedUrlCP } from "./firebaseQueries";
+// import { getShortenedUrl, getShortenedUrlCP } from "./firebaseQueries";
 
 import { getShortenedUrlAI, getShortenedUrlAPI, getShortenedUrlWPswd, getShortenedUrlCust } from "./BackendQueries";
 
-function URLShortener(){
+function URLShortener() {
 
     const [url, setUrl] = useState("");
     const [shortenedUrl, setShortenedUrl] = useState("");
@@ -25,11 +25,11 @@ function URLShortener(){
     }
 
     const handlecustURL = (e) => {
-        if(customUrl){
+        if (customUrl) {
             setCustomUrl(false);
             // console.log("Custom URL Disabled");
             document.querySelector(".URLblk").style.backgroundColor = "transparent";
-        }else{
+        } else {
             // console.log("Custom URL Enabled");
             document.querySelector(".URLblk").style.backgroundColor = "#3a7bd5";
             setCustomUrl(true);
@@ -37,28 +37,28 @@ function URLShortener(){
     }
 
     const handlepswdURL = (e) => {
-        if(passwordurl){
+        if (passwordurl) {
             setPasswordurl(false);
             // console.log("Password URL Disabled");
             document.querySelector(".pswdBLK").style.backgroundColor = "transparent";
-        }else{
+        } else {
             // console.log("Password URL Enabled");
             document.querySelector(".pswdBLK").style.backgroundColor = "#3a7bd5";
             setPasswordurl(true);
         }
     }
 
-    const makeitnew = (e) =>{
+    const makeitnew = (e) => {
         setShortenedUrl("")
     }
 
     const handleAIURL = (e) => {
         // aisluggenbtn = document.querySelector(".aislugop")
-        if(aisluggen){
+        if (aisluggen) {
             setAisluggen(false);
             document.querySelector(".aislugop").style.backgroundColor = "transparent";
             document.querySelector(".URLblk").style.display = "block";
-        }else{
+        } else {
             setAisluggen(true);
             document.querySelector(".aislugop").style.backgroundColor = "#3a7bd5";
             document.querySelector(".URLblk").style.display = "none";
@@ -67,13 +67,13 @@ function URLShortener(){
 
     const handleSlugGenMethod = (e) => {
         const method = e.target.value;
-        if(method === "custom"){
+        if (method === "custom") {
             setCustomUrl(true);
             setAisluggen(false);
-        } else if (method === "ai"){
+        } else if (method === "ai") {
             setAisluggen(true);
             setCustomUrl(false);
-        }else {
+        } else {
             setCustomUrl(false);
             setAisluggen(false);
         }
@@ -101,93 +101,100 @@ function URLShortener(){
         const custCont = document.querySelector(".customURL-i-cont input")
 
         let shortenedURL, pswd
-        if(givenURL === ""){
+        if (givenURL === "") {
             alert("Where is the Looooonnnngggg URL?")
-            document.querySelector(".URLinput").style.outline="1px solid red"
-            document.querySelector(".URLinput").style.outlineOffset="-1px"
-            setTimeout(()=>{
-                document.querySelector(".URLinput").style.outline="none"
-            },3000)
-            return 
-        }else{
-            if(!(URL.canParse(givenURL))){
+            document.querySelector(".URLinput").style.outline = "1px solid red"
+            document.querySelector(".URLinput").style.outlineOffset = "-1px"
+            setTimeout(() => {
+                document.querySelector(".URLinput").style.outline = "none"
+            }, 3000)
+            document.getElementById("urlshortensubmitbtn").disabled = false;
+            return
+        } else {
+            if (!(URL.canParse(givenURL))) {
                 alert("Not a valid URL :|")
+                document.getElementById("urlshortensubmitbtn").disabled = false;
                 return
             }
         }
 
-        if(passwordurl && pswdCont.value === ""){
+        if (passwordurl && pswdCont.value === "") {
             pswdCont.style.borderBottom = "1px solid red"
             alert("Password field cant be empty..")
-            setTimeout(()=>{
+            setTimeout(() => {
                 pswdCont.style.borderBottom = "1px solid #ffffff"
-            },3000)
+            }, 3000)
+            document.getElementById("urlshortensubmitbtn").disabled = false;
             return
         }
 
-        if(customUrl){
+        if (customUrl) {
             let custVal = custCont.value
-            if(custVal === ""){
+            if (custVal === "") {
                 custCont.style.borderBottom = "1px solid red"
                 alert("Enter the custom alias")
-                setTimeout(()=>{
+                setTimeout(() => {
                     custCont.style.borderBottom = "1px solid #ffffff"
-                },3000)
+                }, 3000)
+                document.getElementById("urlshortensubmitbtn").disabled = false;
                 return
 
             }
 
-            if(custVal.length < 5){
+            if (custVal.length < 5) {
                 alert("Custom Alias must be minimum 5 characters")
-                return 
-            }
-
-            if(custVal == "linkdir" || custVal == "links"){
-                alert("The alias `links` is reserved")
+                document.getElementById("urlshortensubmitbtn").disabled = false;
                 return
             }
 
-            const illegalChar = ["/", ".", "@", "#", "*", "&", "?", "(", ")", "=", ":", ";", "<",">", "{", "}", "[", "]"]
+            if (custVal == "linkdir" || custVal == "links") {
+                alert("The alias `links` is reserved")
+                document.getElementById("urlshortensubmitbtn").disabled = false;
+                return
+            }
 
-            for(let i of illegalChar){
-                if(custVal.includes(i)){
+            const illegalChar = ["/", ".", "@", "#", "*", "&", "?", "(", ")", "=", ":", ";", "<", ">", "{", "}", "[", "]"]
+
+            for (let i of illegalChar) {
+                if (custVal.includes(i)) {
                     alert(`The alias cannot contain the character ${i}`)
-                     return
+                    document.getElementById("urlshortensubmitbtn").disabled = false;
+                    return
                 }
             }
-           
+
         }
 
         setUrl(givenURL);
         // console.log(customUrl + " " + passwordurl + " " + aisluggen)
-        try{
-            if(customUrl && passwordurl != ""){
+        try {
+            if (customUrl && passwordurl != "") {
                 const customURL = document.querySelector(".customURL-i-cont input").value;
                 const password = document.querySelector(".customURL-i-cont input[type='password']").value;
                 await getShortenedUrlCust(givenURL, customURL, password);
                 setShortenedUrl("comprl.web.app/" + customURL);
                 shortenedURL = `comprl.web.app/${customURL}`
                 pswd = password
-            }else if(aisluggen && passwordurl != ""){
+            } else if (aisluggen && passwordurl != "") {
                 const password = document.querySelector(".customURL-i-cont input[type='password']").value;
                 const ext = await getShortenedUrlAI(givenURL, password)
                 setShortenedUrl(ext);
-                shortenedURL = ext 
-            }else if(customUrl){
+                shortenedURL = ext
+            } else if (customUrl) {
                 const customURL = document.querySelector(".customURL-i-cont input").value;
                 await getShortenedUrlCust(givenURL, customURL, null);
                 setShortenedUrl("comprl.web.app/" + customURL);
                 shortenedURL = `comprl.web.app/${customURL}`
-            }else if(passwordurl){
+            } else if (passwordurl) {
                 const password = document.querySelector(".customURL-i-cont input[type='password']").value;
                 const ext = await getShortenedUrlWPswd(givenURL, password);
                 setShortenedUrl(ext);
                 shortenedURL = ext
-            }else if(aisluggen){
+            } else if (aisluggen) {
                 const ext = await getShortenedUrlAI(givenURL, null)
                 setShortenedUrl(ext);
-                shortenedURL = ext 
-            }else{
+                shortenedURL = ext
+            } else {
                 const ext = await getShortenedUrlAPI(givenURL);
                 setShortenedUrl(ext);
                 shortenedURL = ext
@@ -196,21 +203,21 @@ function URLShortener(){
             const currentState = JSON.parse(localStorage.getItem("linkhistory"))
             currentState.push(
                 {
-                    actual : givenURL,
-                    short : shortenedURL,
-                    password : null
+                    actual: givenURL,
+                    short: shortenedURL,
+                    password: null
                 }
             )
 
             localStorage.setItem("linkhistory", JSON.stringify(currentState))
 
-             document.getElementById("urlshortensubmitbtn").disabled = false;
+            document.getElementById("urlshortensubmitbtn").disabled = false;
 
-        }catch(e){
+        } catch (e) {
             console.log('Sorrry there was an error. Oopss...')
         }
 
-         document.getElementById("urlshortensubmitbtn").disabled = false;
+        document.getElementById("urlshortensubmitbtn").disabled = false;
     }
 
     return (
@@ -218,20 +225,20 @@ function URLShortener(){
             <div className="urlShortener-i-cont">
                 <h2>Shorten Your looonnnggg... URL</h2>
                 <form className="urlShortenerForm" onSubmit={handleSubmit}>
-                    <input className="URLinput" type="text" placeholder="Enter URL to shorten" onChange={makeitnew}/>
+                    <input className="URLinput" type="text" placeholder="Enter URL to shorten" onChange={makeitnew} />
                     <button type="submit" id="urlshortensubmitbtn" onClick={handleURLshorten}>Shorten</button>
                 </form>
 
-                
+
                 {
-                shortenedUrl ? 
-                <div className="urlShortenerResult">
-                    <h3>Your Shortened URL is ready..</h3>
-                    <div className="urlShortenerResult-i-cont">
-                        <p>{shortenedUrl}</p>
-                        <button className="copyBtn" onClick={copyToClipboard}>Copy</button>
-                    </div>
-                </div> : <></>
+                    shortenedUrl ?
+                        <div className="urlShortenerResult">
+                            <h3>Your Shortened URL is ready..</h3>
+                            <div className="urlShortenerResult-i-cont">
+                                <p>{shortenedUrl}</p>
+                                <button className="copyBtn" onClick={copyToClipboard}>Copy</button>
+                            </div>
+                        </div> : <></>
 
                 }
 
@@ -251,23 +258,23 @@ function URLShortener(){
                 </div>
 
                 {
-                    customUrl ? 
-                    <div className="customURL-cont">
-                        Enter a custom URL Alias:
-                        <div className="customURL-i-cont">
-                            comprl.web.app/<input type="text" placeholder="Enter Custom URL" />
-                        </div> 
-                    </div>: <></>
+                    customUrl ?
+                        <div className="customURL-cont">
+                            Enter a custom URL Alias:
+                            <div className="customURL-i-cont">
+                                comprl.web.app/<input type="text" placeholder="Enter Custom URL" />
+                            </div>
+                        </div> : <></>
                 }
 
                 {
-                    passwordurl ? 
-                    <div className="customURL-cont">
-                        Enter a access password:
-                        <div className="customURL-i-cont">
-                            <input type="password" placeholder="Enter a password" />
-                        </div> 
-                    </div>: <></>
+                    passwordurl ?
+                        <div className="customURL-cont">
+                            Enter a access password:
+                            <div className="customURL-i-cont">
+                                <input type="password" placeholder="Enter a password" />
+                            </div>
+                        </div> : <></>
                 }
 
 
