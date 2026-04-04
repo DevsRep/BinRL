@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import PrevLinksTemp from "./PrevLinksTemp"
 import { Link } from "react-router-dom"
 
+import { useAuth } from "./AuthContext"
 
 function Header(props) {
 
@@ -9,6 +10,8 @@ function Header(props) {
     const [sideHistoryBar, setSideHitoryBar] = useState(false)
 
     const [subText, setSubText] = useState("")
+
+    const { logout } = useAuth()
 
     useEffect(() => {
         if (props.subText != "") {
@@ -141,6 +144,11 @@ function Header(props) {
 
             </div>
 
+            {useAuth.currentUser ? (
+                <button className="logout-btn" value={"Logout"} onClick={logout}>Logout</button>
+            ) : (
+                <></>
+            )}
 
         </header>
     )
