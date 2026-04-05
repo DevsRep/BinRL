@@ -19,6 +19,11 @@ function URLShortener() {
     //     })
     // })
 
+    const handleRefresh = (e) => {
+        e.preventDefault();
+        setShortenedUrl("");
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         // console.log("URL Shortened");
@@ -223,7 +228,10 @@ function URLShortener() {
     return (
         <div className="urlShortener">
             <div className="urlShortener-i-cont">
-                <h2>Shorten Your looonnnggg... URL</h2>
+                <div className="top-column-url">
+                    <h2>Shorten Your looonnnggg... URL</h2>
+                    <i className="fa fa-refresh" style={{ "cursor": "pointer" }} onClick={handleRefresh}></i>
+                </div>
                 <form className="urlShortenerForm" onSubmit={handleSubmit}>
                     <input className="URLinput" type="text" placeholder="Enter URL to shorten" onChange={makeitnew} />
                     <button type="submit" id="urlshortensubmitbtn" onClick={handleURLshorten}>Shorten</button>

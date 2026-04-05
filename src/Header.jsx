@@ -11,7 +11,7 @@ function Header(props) {
 
     const [subText, setSubText] = useState("")
 
-    const { logout } = useAuth()
+    const { currentUser, logout } = useAuth()
 
     useEffect(() => {
         if (props.subText != "") {
@@ -144,10 +144,10 @@ function Header(props) {
 
             </div>
 
-            {useAuth.currentUser ? (
-                <button className="logout-btn" value={"Logout"} onClick={logout}>Logout</button>
+            {currentUser ? (
+                <button className="logout-btn" onClick={logout}>Logout</button>
             ) : (
-                <></>
+                <Link to="/login"><button className="logout-btn">Login</button></Link>
             )}
 
         </header>

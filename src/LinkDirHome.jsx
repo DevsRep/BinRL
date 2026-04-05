@@ -7,12 +7,16 @@ function LinkDirHome() {
 
     const [linkDirList, setLinkDirList] = useState([])
 
+    const [loading, setLoading] = useState(false)
+
     const { getToken } = useAuth();
 
     const retriveData = async () => {
+        setLoading(true)
         const token = await getTokenAsync();
         const tempData = await getAllLinkDir(token)
         setLinkDirList(tempData)
+        setLoading(false)
     }
 
     const getTokenAsync = async () => {
@@ -39,7 +43,11 @@ function LinkDirHome() {
     return (
         <div className="link-dir-list">
             {
-                linkDirList.length > 0 ? (
+                loading ? (
+                    <div className="new-link-dir-cre-cont">
+                        <h5>Loading Link Directories...</h5>
+                    </div>
+                ) : linkDirList.length > 0 ? (
                     linkDirList.map((element) => (
                         // <Link  to={`/linkdir/edit?id=${element.linkDirID}`} style={{ textDecoration: "none" }} key={element.linkDirName}>
                         <div className="new-link-dir-cre-cont" key={element.linkDirName}>

@@ -342,6 +342,13 @@ input {
   cursor: pointer;
 }
 
+.top-column-url {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .extra-features-i-cont {
   display: flex;
   gap: 10px;
@@ -749,9 +756,9 @@ input {
   }
 
 
-  .link-dir-list {
+  /* .link-dir-list {
     padding: 20px 0;
-  }
+  } */
 
   .new-link-dir-cre-cont {
     width: auto;

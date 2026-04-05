@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { createNewLinkDir } from "./BackendQueries.js"
 import { useAuth } from "./AuthContext.jsx"
+import { useNavigate } from "react-router-dom"
 
 
 function NewLinkDir() {
@@ -11,6 +12,8 @@ function NewLinkDir() {
     const [linkData, setLinkData] = useState([{ linkName: "", linkURL: "" }])
 
     const { getToken } = useAuth();
+
+    const navigate = useNavigate();
 
 
     const addLink = () => {
@@ -60,6 +63,8 @@ function NewLinkDir() {
 
     const NewLinkDir = async () => {
         setLoading(true);
+        document.getElementById("newlinkdirsubmitbutton").disabled = true;
+
         const linkDirName = document.getElementById("linkDirName").value;
         const linkDirDesc = document.getElementById("linkDirDesc").value;
 
@@ -81,14 +86,16 @@ function NewLinkDir() {
         await createNewLinkDir(linkDirName, linkDirDesc, linkData, token)
             .then((linkDirId) => {
                 console.log("New Link Directory created with ID:", linkDirId);
-                alert("Link Directory created successfully! ID: " + linkDirId);
+                // alert("Link Directory created successfully! ID: " + linkDirId);
                 // Optionally, redirect to the new Link Directory page
-                window.location.href = `/linkdir`;
+                navigate(`/linkdir`);
             })
             .catch((error) => {
                 console.error("Error creating Link Directory:", error);
-                alert("Failed to create Link Directory. Please try again.");
+                document.getElementById("newlinkdirsubmitbutton").disabled = false;
+                // alert("Failed to create Link Directory. Please try again.");
             })
+
 
         setLoading(false);
 
@@ -142,7 +149,7 @@ function NewLinkDir() {
                         </div>
                     </div>
 
-                    <button type="submit" onClick={NewLinkDir}>Create</button>
+                    <button type="submit" id="newlinkdirsubmitbutton" onClick={NewLinkDir}>Create</button>
                 </form>
             </div>
     )
