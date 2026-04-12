@@ -33,8 +33,12 @@ header h1 {
   font-weight: normal;
 }
 
+.new-link-dir-form .delete-ld-btn {
+  background-color: var(--clear-btn-bg);
+}
+
 .logout-btn {
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   right: 10px;
   background-color: var(--dark-button-color);

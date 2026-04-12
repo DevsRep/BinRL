@@ -99,6 +99,11 @@ function LinkDirEdit() {
         });
     }
 
+    const DeleteLinkDir = async () => {
+        console.log("Helle");
+
+    }
+
     const NewLinkDir = async () => {
         setLoading(true);
         const linkDirName = document.getElementById("linkDirName").value;
@@ -192,6 +197,7 @@ function LinkDirEdit() {
                         </div>
 
                         <button type="submit" onClick={NewLinkDir}>Save Edits</button>
+                        <button type="submit" className="delete-ld-btn" onClick={DeleteLinkDir}>Delete LinkDir</button>
                     </form>
                 </div>) : <p>No Link Directory to edit...</p>
     )

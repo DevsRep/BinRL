@@ -19,6 +19,14 @@ function LinkDirHome() {
         setLoading(false)
     }
 
+    const copyLinkDir = (linkDirID) => {
+        navigator.clipboard.writeText(`http://localhost:5173/l/${linkDirID}`)
+        document.getElementById("ldCopyBtn").innerHTML = "Copied"
+        setTimeout(() => {
+            document.getElementById("ldCopyBtn").innerHTML = "Copy Link"
+        }, 2000)
+    }
+
     const getTokenAsync = async () => {
         const token = await getToken();
         return token;
@@ -42,6 +50,7 @@ function LinkDirHome() {
 
     return (
         <div className="link-dir-list">
+
             {
                 loading ? (
                     <div className="new-link-dir-cre-cont">
@@ -55,11 +64,12 @@ function LinkDirHome() {
 
                             <div className="link-dir-settings-cont">
                                 <a href={`/linkdir/edit?id=${element.linkDirID}`}><div className="link-dir-setting-btn">Edit</div></a>
-                                <a href={`/l/${element.linkDirID}`} target="_blank"><div className="link-dir-setting-btn">View</div></a>
+                                <div className="link-dir-setting-btn" id="ldCopyBtn" onClick={() => copyLinkDir(element.linkDirID)}>Copy Link</div>
                             </div>
                         </div>
                         // </Link>
                     ))
+
                 ) : null
             }
 
