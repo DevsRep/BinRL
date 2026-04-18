@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 
 const BackendBaseUrl = "http://localhost:8080";
+
 const BackendApiUrl = `${BackendBaseUrl}/api/v1`;
 
 
@@ -199,7 +200,7 @@ export async function getShortenedUrlWPswd(longUrl, password) {
         password: hashedPswd
     }
 
-    console.log(body, password, longUrl)
+    // console.log(body, password, longUrl)
 
     const response = await fetch(`${BackendApiUrl}/shorten`, {
         method: 'POST',
@@ -271,7 +272,7 @@ export async function createNewLinkDir(linkDirName, linkDirDesc, links, token) {
 
         const data = await response.text();
 
-        console.log("Response:", data);
+        // console.log("Response:", data);
 
         return data;
 
@@ -284,7 +285,7 @@ export async function createNewLinkDir(linkDirName, linkDirDesc, links, token) {
 export async function modifyLinkDir(linkDirData, token) {
     try {
 
-        console.log("Rcvd Dtaa: ", linkDirData)
+        // console.log("Rcvd Dtaa: ", linkDirData)
         const response = await fetch(`${BackendApiUrl}/linkdir/update`, {
             method: 'POST',
             headers: {
@@ -297,7 +298,7 @@ export async function modifyLinkDir(linkDirData, token) {
 
         const data = await response.text();
 
-        console.log("Response:", data);
+        // console.log("Response:", data);
 
         return data;
 
@@ -347,7 +348,7 @@ export async function getLinkDir(linkDirId) {
 
 
 export async function getLinkDirEdit(linkDirId, token) {
-    console.log(linkDirId, token)
+    // console.log(linkDirId, token)
     const response = await fetch(`${BackendApiUrl}/linkdir/${linkDirId}/edit`,
         {
             method: 'GET',
@@ -361,4 +362,24 @@ export async function getLinkDirEdit(linkDirId, token) {
     const data = await response.json();
 
     return data;
+}
+
+export async function deleteLinkDir(linkDirId, token) {
+
+    const response = await fetch(`${BackendApiUrl}/linkdir/${linkDirId}/delete`,
+        {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+
+        }
+    )
+
+
+    const data = await response.json()
+
+    return data
+
 }

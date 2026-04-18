@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 // import { createNewLinkDir } from "./firebaseQueries"
-import { getLinkDirEdit, modifyLinkDir } from "./BackendQueries"
+import { getLinkDirEdit, modifyLinkDir, deleteLinkDir } from "./BackendQueries"
 import { useAuth } from "./AuthContext.jsx"
-
+import { useNavigate } from "react-router-dom"
 
 function LinkDirEdit() {
 
@@ -14,6 +14,8 @@ function LinkDirEdit() {
     const [linkDirId, setLinkDirId] = useState(null);
 
     const { getToken } = useAuth();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -99,9 +101,17 @@ function LinkDirEdit() {
         });
     }
 
-    const DeleteLinkDir = async () => {
-        console.log("Helle");
-
+    const DeleteLinkDir = async (e) => {
+        e.preventDefault();
+        setLoading(true)
+        const token = await getToken();
+        const status = await deleteLinkDir(linkDirId, token)
+        setLoading(false)
+        if (status == true) {
+            navigate("/linkdir")
+        } else {
+            alert("Somthing wrong with the server.")
+        }
     }
 
     const NewLinkDir = async () => {

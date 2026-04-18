@@ -8,6 +8,7 @@ function LinkDirHome() {
     const [linkDirList, setLinkDirList] = useState([])
 
     const [loading, setLoading] = useState(false)
+    const [copiedId, setCopiedId] = useState(null)
 
     const { getToken } = useAuth();
 
@@ -21,9 +22,9 @@ function LinkDirHome() {
 
     const copyLinkDir = (linkDirID) => {
         navigator.clipboard.writeText(`http://localhost:5173/l/${linkDirID}`)
-        document.getElementById("ldCopyBtn").innerHTML = "Copied"
+        setCopiedId(linkDirID)
         setTimeout(() => {
-            document.getElementById("ldCopyBtn").innerHTML = "Copy Link"
+            setCopiedId(null)
         }, 2000)
     }
 
@@ -64,7 +65,7 @@ function LinkDirHome() {
 
                             <div className="link-dir-settings-cont">
                                 <a href={`/linkdir/edit?id=${element.linkDirID}`}><div className="link-dir-setting-btn">Edit</div></a>
-                                <div className="link-dir-setting-btn" id="ldCopyBtn" onClick={() => copyLinkDir(element.linkDirID)}>Copy Link</div>
+                                <div className="link-dir-setting-btn" onClick={() => copyLinkDir(element.linkDirID)}>{copiedId === element.linkDirID ? "Copied" : "Copy"}</div>
                             </div>
                         </div>
                         // </Link>
